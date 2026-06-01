@@ -1,46 +1,195 @@
-.page { padding: 28px 32px; }
-.loading { text-align: center; padding: 80px; color: #94a3b8; }
-.back { background: none; border: none; color: #3b82f6; cursor: pointer; font-size: 14px; padding: 0 0 16px; }
-.back:hover { text-decoration: underline; }
+.page { padding: 36px 40px; }
 
-.header { margin-bottom: 24px; }
-.titleRow { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
-.title { font-size: 22px; font-weight: 700; color: #0f172a; margin: 0; }
-.badge { padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 600; margin-top: 2px; }
-.caseNumber { color: #64748b; font-size: 14px; margin-top: 6px; }
-
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-
-.card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; }
-.cardTitle { font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 14px; text-transform: uppercase; letter-spacing: 0.05em; }
-
-.statusBtns { display: flex; flex-wrap: wrap; gap: 8px; }
-.statusBtn {
-  padding: 7px 14px; border: 1.5px solid #e2e8f0; border-radius: 20px;
-  font-size: 13px; cursor: pointer; background: #fff; color: #475569; transition: all 0.15s;
+.loading {
+  text-align: center;
+  padding: 100px;
+  color: var(--c-text-3);
+  font-size: 15px;
 }
-.statusBtn:hover:not(:disabled):not(.statusActive) { border-color: #3b82f6; color: #3b82f6; }
+
+/* ── Back link ── */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--c-text-2);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 0 20px;
+  transition: color 0.15s;
+}
+.back:hover { color: var(--c-gold); }
+
+/* ── Header ── */
+.header { margin-bottom: 28px; }
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.caseNumber {
+  color: var(--c-text-3);
+  font-size: 13px;
+  margin-top: 8px;
+  letter-spacing: 0.01em;
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--c-surface);
+  border-radius: 12px;
+  padding: 22px;
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.cardTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-text-3);
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Status buttons ── */
+.statusBtns { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.statusBtn {
+  padding: 7px 16px;
+  border: 1.5px solid var(--c-border);
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  background: var(--c-surface);
+  color: var(--c-text-2);
+  transition: all 0.15s;
+  font-weight: 500;
+}
+.statusBtn:hover:not(:disabled):not(.statusActive) {
+  border-color: var(--c-gold);
+  color: var(--c-gold);
+}
 .statusBtn:disabled { cursor: default; }
 .statusActive { font-weight: 600; }
 
-.infoList { display: flex; flex-direction: column; gap: 10px; }
-.infoRow { display: flex; gap: 8px; }
-.infoLabel { font-size: 13px; color: #94a3b8; min-width: 110px; flex-shrink: 0; }
-.infoValue { font-size: 14px; color: #0f172a; }
+/* ── Info list ── */
+.infoList { display: flex; flex-direction: column; gap: 12px; }
 
-.desc { font-size: 14px; color: #334155; line-height: 1.6; margin: 0; }
+.infoRow { display: flex; gap: 10px; }
 
-.attachHeader { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.attachHeader .cardTitle { margin: 0; }
-.uploadBtn {
-  padding: 6px 14px; background: #f1f5f9; border: 1px solid #e2e8f0;
-  border-radius: 6px; font-size: 13px; cursor: pointer; color: #3b82f6;
+.infoLabel {
+  font-size: 13px;
+  color: var(--c-text-3);
+  min-width: 110px;
+  flex-shrink: 0;
+  padding-top: 1px;
 }
-.uploadBtn:hover:not(:disabled) { background: #eff6ff; }
-.noAttach { font-size: 13px; color: #94a3b8; margin: 0; }
+
+.infoValue {
+  font-size: 14px;
+  color: var(--c-text);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* ── Description ── */
+.desc {
+  font-size: 14px;
+  color: var(--c-text-2);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Attachments ── */
+.attachHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.attachHeader .cardTitle { margin: 0; }
+
+.uploadBtn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1.5px solid var(--c-border);
+  border-radius: 7px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--c-text-2);
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.uploadBtn:hover:not(:disabled) {
+  border-color: var(--c-gold);
+  color: var(--c-gold);
+  background: var(--c-gold-bg);
+}
+
+.noAttach { font-size: 13px; color: var(--c-text-3); margin: 0; }
 
 .attachList { display: flex; flex-direction: column; gap: 8px; }
-.attachItem { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: #f8fafc; border-radius: 7px; }
-.attachIcon { font-size: 16px; }
-.attachName { flex: 1; font-size: 13px; color: #334155; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.attachSize { font-size: 12px; color: #94a3b8; flex-shrink: 0; }
+
+.attachItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--c-bg);
+  border-radius: 8px;
+  border: 1px solid var(--c-border);
+  transition: border-color 0.15s;
+}
+.attachItem:hover { border-color: var(--c-gold); }
+
+.attachIcon { font-size: 16px; flex-shrink: 0; }
+
+.attachName {
+  flex: 1;
+  font-size: 13px;
+  color: var(--c-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.attachSize {
+  font-size: 12px;
+  color: var(--c-text-3);
+  flex-shrink: 0;
+}
