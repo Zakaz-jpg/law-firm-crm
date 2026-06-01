@@ -1,0 +1,25 @@
+{
+  "project_info": {
+    "project_number": "000000000000",
+    "project_id": "law-crm-dev",
+    "storage_bucket": "law-crm-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+        "android_client_info": {
+          "package_name": "com.lawcrm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaPlaceholder_ReplaceWithRealKey"
+        }
+      ],
+      "services": {}
+    }
+  ],
+  "configuration_version": "1"
+}
