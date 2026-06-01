@@ -11,15 +11,22 @@ export function setBaseUrl(url: string) {
   localStorage.setItem(BASE_URL_KEY, url.replace(/\/+$/, ''))
 }
 
-function getToken() { return localStorage.getItem(ACCESS_TOKEN_KEY) }
-function getRefresh() { return localStorage.getItem(REFRESH_TOKEN_KEY) }
-export function saveTokens(t: TokenResponse) {
-  localStorage.setItem(ACCESS_TOKEN_KEY, t.access_token)
-  localStorage.setItem(REFRESH_TOKEN_KEY, t.refresh_token)
+function getToken() {
+  return localStorage.getItem(ACCESS_TOKEN_KEY) || sessionStorage.getItem(ACCESS_TOKEN_KEY)
+}
+function getRefresh() {
+  return localStorage.getItem(REFRESH_TOKEN_KEY) || sessionStorage.getItem(REFRESH_TOKEN_KEY)
+}
+export function saveTokens(t: TokenResponse, remember = true) {
+  const store = remember ? localStorage : sessionStorage
+  store.setItem(ACCESS_TOKEN_KEY, t.access_token)
+  store.setItem(REFRESH_TOKEN_KEY, t.refresh_token)
 }
 export function clearTokens() {
   localStorage.removeItem(ACCESS_TOKEN_KEY)
   localStorage.removeItem(REFRESH_TOKEN_KEY)
+  sessionStorage.removeItem(ACCESS_TOKEN_KEY)
+  sessionStorage.removeItem(REFRESH_TOKEN_KEY)
 }
 export function isAuthenticated() { return !!getToken() }
 

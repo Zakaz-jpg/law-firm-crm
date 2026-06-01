@@ -4,7 +4,7 @@ import { isAuthenticated, clearTokens, saveTokens, api } from '../api/client'
 interface AuthContextType {
   isLoggedIn: boolean
   user: { id: number; email: string; full_name: string } | null
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string, remember?: boolean) => Promise<void>
   logout: () => void
 }
 
@@ -20,9 +20,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [isLoggedIn])
 
-  async function login(email: string, password: string) {
+  async function login(email: string, password: string, remember = true) {
     const tokens = await api.login(email, password)
-    saveTokens(tokens)
+    saveTokens(tokens, remember)
     setIsLoggedIn(true)
     const me = await api.me()
     setUser(me)

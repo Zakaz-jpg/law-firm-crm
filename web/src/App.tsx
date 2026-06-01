@@ -19,7 +19,7 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/law-firm-crm">
         <Routes>
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route element={<PrivateRoute><Layout /></PrivateRoute>}>
