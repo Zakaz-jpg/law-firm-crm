@@ -1,0 +1,390 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		018CA867F92C6A46106524E2 /* CaseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451FD57CB571A71883E163AA /* CaseDetailView.swift */; };
+		1A210287022BDA7A77A1BA59 /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC93FFB73F7607CBF1252541 /* SyncService.swift */; };
+		328DED2DCC14DF7429F7A8C3 /* CasesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E285BCA52671AA2B9F9B250 /* CasesListView.swift */; };
+		5136DFEB1F4AEF8CFA092A89 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AC93D0013D176527AC6EF8 /* AuthManager.swift */; };
+		522FC4FA1E055D286C238FF1 /* LawCRMApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C129D9FD6DFE45A3D8ED592 /* LawCRMApp.swift */; };
+		9FFB235AF16CFAE6DC9D894A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587081DC70681F4074235D77 /* LoginView.swift */; };
+		ACCF8EEAC867F8AE57BCBC1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249AA357BA35D046B7611EA3 /* Assets.xcassets */; };
+		AE9CE27DB79DF50F381966F4 /* ClientsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A5A33D69AD29E3E5C9A54 /* ClientsListView.swift */; };
+		B4FF14CA58DCE0DB937B3113 /* CreateCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCF274AFA40727638B7D977 /* CreateCaseView.swift */; };
+		F48225D226E61F99A27E7AE4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6640E20348CEC422E4D1D3C /* APIClient.swift */; };
+		FD116A6E5CDFCFABBF00661D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F972175EEE3FAA3701B62CE /* Models.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0F972175EEE3FAA3701B62CE /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		249AA357BA35D046B7611EA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2C129D9FD6DFE45A3D8ED592 /* LawCRMApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawCRMApp.swift; sourceTree = "<group>"; };
+		3E285BCA52671AA2B9F9B250 /* CasesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasesListView.swift; sourceTree = "<group>"; };
+		3ECE9A2F0678B209E4A706C9 /* LawCRM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LawCRM.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		451FD57CB571A71883E163AA /* CaseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseDetailView.swift; sourceTree = "<group>"; };
+		587081DC70681F4074235D77 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		7BCF274AFA40727638B7D977 /* CreateCaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCaseView.swift; sourceTree = "<group>"; };
+		7C5A5A33D69AD29E3E5C9A54 /* ClientsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientsListView.swift; sourceTree = "<group>"; };
+		90AC93D0013D176527AC6EF8 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		E6640E20348CEC422E4D1D3C /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		EC93FFB73F7607CBF1252541 /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
+		3EBAE220C65B95B5461A69F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B804F492588F3A2BE5BD7707 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04A50BA4F977A686069E2126 /* LawCRM */ = {
+			isa = PBXGroup;
+			children = (
+				2C129D9FD6DFE45A3D8ED592 /* LawCRMApp.swift */,
+				B43BC546DDC2526789CC2F03 /* Models */,
+				3E3FFEA60D64A9FB2972615A /* Network */,
+				43CC40AE1D774D156F083FBF /* Services */,
+				DAAD773C3E3F5DBE98870E75 /* Views */,
+				249AA357BA35D046B7611EA3 /* Assets.xcassets */,
+			);
+			path = LawCRM;
+			sourceTree = "<group>";
+		};
+		1C5BBF7635D3948CE19F19DF /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				7C5A5A33D69AD29E3E5C9A54 /* ClientsListView.swift */,
+			);
+			path = Clients;
+			sourceTree = "<group>";
+		};
+		3E3FFEA60D64A9FB2972615A /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E6640E20348CEC422E4D1D3C /* APIClient.swift */,
+				90AC93D0013D176527AC6EF8 /* AuthManager.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		43CC40AE1D774D156F083FBF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				EC93FFB73F7607CBF1252541 /* SyncService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		942A9A1A63793D61082FFAA8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3ECE9A2F0678B209E4A706C9 /* LawCRM.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B43BC546DDC2526789CC2F03 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0F972175EEE3FAA3701B62CE /* Models.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C55B44836BF4ABEA63B8831D /* Cases */ = {
+			isa = PBXGroup;
+			children = (
+				3E285BCA52671AA2B9F9B250 /* CasesListView.swift */,
+				451FD57CB571A71883E163AA /* CaseDetailView.swift */,
+				7BCF274AFA40727638B7D977 /* CreateCaseView.swift */,
+			);
+			path = Cases;
+			sourceTree = "<group>";
+		};
+		DAAD773C3E3F5DBE98870E75 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E2A76B7CE38CBF796DF9DBF7 /* Auth */,
+				C55B44836BF4ABEA63B8831D /* Cases */,
+				1C5BBF7635D3948CE19F19DF /* Clients */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E2A76B7CE38CBF796DF9DBF7 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				587081DC70681F4074235D77 /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		EC6AE75C017423A0C5A951A8 = {
+			isa = PBXGroup;
+			children = (
+				04A50BA4F977A686069E2126 /* LawCRM */,
+				942A9A1A63793D61082FFAA8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		34A04005BCAF206EEC990BD9 /* LawCRM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E1C734F683BB1E0455121E0 /* Build configuration list for PBXNativeTarget "LawCRM" */;
+			buildPhases = (
+				A8845CE5F531D368403AFF88 /* Sources */,
+				B804F492588F3A2BE5BD7707 /* Frameworks */,
+				8E8A406124A99A2C1D9A1238 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LawCRM;
+			productName = LawCRM;
+			productReference = 3ECE9A2F0678B209E4A706C9 /* LawCRM.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		244210E48437B6556980A702 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = F97B309BE61809D9CDDFC3BB /* Build configuration list for PBXProject "LawCRM" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ru;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				ru,
+			);
+			mainGroup = EC6AE75C017423A0C5A951A8;
+			productRefGroup = 942A9A1A63793D61082FFAA8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				34A04005BCAF206EEC990BD9 /* LawCRM */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8E8A406124A99A2C1D9A1238 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACCF8EEAC867F8AE57BCBC1D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A8845CE5F531D368403AFF88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				522FC4FA1E055D286C238FF1 /* LawCRMApp.swift in Sources */,
+				FD116A6E5CDFCFABBF00661D /* Models.swift in Sources */,
+				F48225D226E61F99A27E7AE4 /* APIClient.swift in Sources */,
+				5136DFEB1F4AEF8CFA092A89 /* AuthManager.swift in Sources */,
+				1A210287022BDA7A77A1BA59 /* SyncService.swift in Sources */,
+				9FFB235AF16CFAE6DC9D894A /* LoginView.swift in Sources */,
+				328DED2DCC14DF7429F7A8C3 /* CasesListView.swift in Sources */,
+				018CA867F92C6A46106524E2 /* CaseDetailView.swift in Sources */,
+				B4FF14CA58DCE0DB937B3113 /* CreateCaseView.swift in Sources */,
+				AE9CE27DB79DF50F381966F4 /* ClientsListView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3FC8B6D7D8468FBD5211E925 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5YKN5V7W7N;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LawCRM/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lawcrm;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4369E18A2430F6CC3650E236 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BA9E97BAAA0625BB2BD61C91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5YKN5V7W7N;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LawCRM/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lawcrm;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D1F5507BA9305378D422EF3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5E1C734F683BB1E0455121E0 /* Build configuration list for PBXNativeTarget "LawCRM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BA9E97BAAA0625BB2BD61C91 /* Debug */,
+				3FC8B6D7D8468FBD5211E925 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F97B309BE61809D9CDDFC3BB /* Build configuration list for PBXProject "LawCRM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4369E18A2430F6CC3650E236 /* Debug */,
+				D1F5507BA9305378D422EF3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 244210E48437B6556980A702 /* Project object */;
+}
