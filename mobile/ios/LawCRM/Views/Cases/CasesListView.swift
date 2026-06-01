@@ -13,6 +13,19 @@ struct CasesListView: View {
                 if cases.isEmpty && sync.isSyncing {
                     ProgressView("Загрузка дел...")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if cases.isEmpty && sync.syncError != nil {
+                    VStack(spacing: 16) {
+                        Image(systemName: "wifi.exclamationmark")
+                            .font(.system(size: 48))
+                            .foregroundStyle(.orange)
+                        Text(sync.syncError!)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.secondary)
+                        Button("Повторить") { Task { await sync.sync() } }
+                            .buttonStyle(.borderedProminent)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if cases.isEmpty {
                     ContentUnavailableView(
                         "Нет дел",
