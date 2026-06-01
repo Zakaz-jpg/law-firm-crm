@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+*.db
+uploads/
+
+# Node
+node_modules/
+dist/
+.next/
+
+# iOS
+mobile/ios/LawCRM.xcodeproj/xcuserdata/
+mobile/ios/LawCRM.xcodeproj/project.xcworkspace/xcuserdata/
+mobile/ios/**/.DS_Store
+mobile/ios/LawCRM/law_firm.db
+
+# Android
+mobile/android/LawCRM/.gradle/
+mobile/android/LawCRM/app/build/
+mobile/android/LawCRM/build/
+mobile/android/LawCRM/local.properties
+
+# Firebase (реальные credentials не коммитим)
+firebase-credentials.json
+
+# OS
+.DS_Store
+*.swp
+.idea/
