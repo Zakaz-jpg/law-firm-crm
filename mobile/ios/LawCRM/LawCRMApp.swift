@@ -50,6 +50,9 @@ struct ContentView: View {
 struct MainTabView: View {
     var body: some View {
         TabView {
+            DashboardView()
+                .tabItem { Label("Дашборд", systemImage: "chart.bar") }
+
             CasesListView()
                 .tabItem { Label("Дела", systemImage: "folder") }
 

@@ -19,7 +19,7 @@ enum APIError: LocalizedError {
 final class APIClient {
     static let shared = APIClient()
 
-    var baseURL = "https://quiet-loops-drop.loca.lt/api/v1"
+    var baseURL = "https://lawcrm-api.onrender.com/api/v1"
 
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
@@ -64,13 +64,36 @@ final class APIClient {
 
     // MARK: - Cases
 
-    func cases(status: String? = nil, query: String? = nil) async throws -> [CaseDTO] {
+    func cases(status: String? = nil, query: String? = nil, clientId: Int? = nil) async throws -> [CaseDTO] {
         var path = "/cases"
         var params: [String] = []
         if let s = status { params.append("status=\(s)") }
         if let q = query { params.append("q=\(q.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? q)") }
+        if let cId = clientId { params.append("client_id=\(cId)") }
         if !params.isEmpty { path += "?" + params.joined(separator: "&") }
         return try await perform(authedRequest(path: path))
+    }
+
+    func updateCase(id: Int, title: String? = nil, caseNumber: String? = nil,
+                    category: String? = nil, court: String? = nil,
+                    description: String? = nil, nextHearingDate: Date? = nil,
+                    clientId: Int? = nil, clearClientId: Bool = false) async throws -> CaseDTO {
+        var req = authedRequest(path: "/cases/\(id)", method: "PATCH")
+        var body: [String: Any] = [:]
+        if let v = title { body["title"] = v }
+        if let v = caseNumber { body["case_number"] = v }
+        if let v = category { body["category"] = v }
+        if let v = court { body["court"] = v }
+        if let v = description { body["description"] = v }
+        if clearClientId { body["client_id"] = NSNull() }
+        else if let v = clientId { body["client_id"] = v }
+        if let v = nextHearingDate {
+            let fmt = ISO8601DateFormatter()
+            fmt.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            body["next_hearing_date"] = fmt.string(from: v)
+        }
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+        return try await perform(req)
     }
 
     func case_(id: Int) async throws -> CaseDTO {
@@ -99,6 +122,10 @@ final class APIClient {
         var path = "/clients"
         if let q = query { path += "?q=\(q.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? q)" }
         return try await perform(authedRequest(path: path))
+    }
+
+    func getClient(id: Int) async throws -> ClientDTO {
+        return try await perform(authedRequest(path: "/clients/\(id)"))
     }
 
     func createClient(fullName: String, phone: String?, email: String?, inn: String?) async throws -> ClientDTO {

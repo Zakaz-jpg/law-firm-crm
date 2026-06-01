@@ -11,6 +11,7 @@ struct CaseDetailView: View {
     @State private var showStatusPicker = false
     @State private var showAttachmentPicker = false
     @State private var selectedPhoto: PhotosPickerItem?
+    @State private var showEdit = false
 
     var body: some View {
         Group {
@@ -24,7 +25,7 @@ struct CaseDetailView: View {
                             HStack {
                                 StatusBadge(status: dto.status)
                                 Spacer()
-                                Button("Изменить") { showStatusPicker = true }
+                                Button("Статус") { showStatusPicker = true }
                                     .font(.caption)
                             }
                             Text(dto.title)
@@ -53,6 +54,19 @@ struct CaseDetailView: View {
         }
         .navigationTitle("Дело")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Изменить") { showEdit = true }
+                    .disabled(caseDTO == nil)
+            }
+        }
+        .sheet(isPresented: $showEdit) {
+            if let dto = caseDTO {
+                EditCaseView(caseDTO: dto) { updated in
+                    caseDTO = updated
+                }
+            }
+        }
         .confirmationDialog("Статус дела", isPresented: $showStatusPicker, titleVisibility: .visible) {
             ForEach(["active", "suspended", "closed", "won", "lost"], id: \.self) { status in
                 Button(status.caseStatusLabel) {

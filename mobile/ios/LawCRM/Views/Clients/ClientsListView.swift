@@ -22,7 +22,9 @@ struct ClientsListView: View {
                     )
                 } else {
                     List(filtered) { client in
-                        ClientRowView(client: client)
+                        NavigationLink(destination: ClientDetailView(clientId: client.id)) {
+                            ClientRowView(client: client)
+                        }
                     }
                     .listStyle(.insetGrouped)
                 }

@@ -24,13 +24,28 @@ struct CreateCaseView: View {
                 }
 
                 Section("Клиент") {
-                    TextField("Имя клиента (необязательно)", text: $vm.clientName)
+                    if let client = vm.selectedClient {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(client.fullName).font(.subheadline)
+                                if let phone = client.phone {
+                                    Text(phone).font(.caption).foregroundStyle(.secondary)
+                                }
+                            }
+                            Spacer()
+                            Button("Изменить") { vm.showClientPicker = true }
+                                .font(.caption)
+                            Button(role: .destructive) { vm.selectedClient = nil } label: {
+                                Image(systemName: "xmark.circle.fill").foregroundStyle(.red)
+                            }
+                        }
+                    } else {
+                        Button("Выбрать клиента") { vm.showClientPicker = true }
+                    }
                 }
 
                 if let error = vm.errorMessage {
-                    Section {
-                        Text(error).foregroundStyle(.red)
-                    }
+                    Section { Text(error).foregroundStyle(.red) }
                 }
             }
             .navigationTitle("Новое дело")
@@ -44,13 +59,14 @@ struct CreateCaseView: View {
                         ProgressView()
                     } else {
                         Button("Создать") {
-                            Task {
-                                if await vm.create() { dismiss() }
-                            }
+                            Task { if await vm.create() { dismiss() } }
                         }
                         .disabled(vm.title.isEmpty)
                     }
                 }
+            }
+            .sheet(isPresented: $vm.showClientPicker) {
+                ClientPickerView(selected: $vm.selectedClient)
             }
         }
     }
@@ -61,7 +77,8 @@ final class CreateCaseViewModel: ObservableObject {
     @Published var title = ""
     @Published var caseNumber = ""
     @Published var category = ""
-    @Published var clientName = ""
+    @Published var selectedClient: ClientDTO?
+    @Published var showClientPicker = false
     @Published var isLoading = false
     @Published var errorMessage: String?
 
@@ -73,7 +90,7 @@ final class CreateCaseViewModel: ObservableObject {
                 title: title,
                 caseNumber: caseNumber.isEmpty ? nil : caseNumber,
                 category: category.isEmpty ? nil : category,
-                clientId: nil
+                clientId: selectedClient?.id
             )
             await SyncService.shared.sync()
             isLoading = false
