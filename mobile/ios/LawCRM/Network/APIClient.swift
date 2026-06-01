@@ -23,13 +23,30 @@ final class APIClient {
 
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
-        let fmt = ISO8601DateFormatter()
-        fmt.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        // Сервер возвращает даты без временной зоны: "2026-06-01T18:34:17.171195"
+        // Пробуем несколько форматов
+        let fmtZ = ISO8601DateFormatter()
+        fmtZ.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+        let fmtNoTZ = DateFormatter()
+        fmtNoTZ.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        fmtNoTZ.locale = Locale(identifier: "en_US_POSIX")
+        fmtNoTZ.timeZone = TimeZone(identifier: "UTC")
+
+        let fmtNoTZShort = DateFormatter()
+        fmtNoTZShort.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        fmtNoTZShort.locale = Locale(identifier: "en_US_POSIX")
+        fmtNoTZShort.timeZone = TimeZone(identifier: "UTC")
+
         d.dateDecodingStrategy = .custom { decoder in
             let s = try decoder.singleValueContainer().decode(String.self)
-            if let date = fmt.date(from: s) { return date }
-            throw DecodingError.dataCorruptedError(in: try decoder.singleValueContainer(),
-                debugDescription: "Invalid date: \(s)")
+            if let date = fmtZ.date(from: s) { return date }
+            if let date = fmtNoTZ.date(from: s) { return date }
+            if let date = fmtNoTZShort.date(from: s) { return date }
+            throw DecodingError.dataCorruptedError(
+                in: try decoder.singleValueContainer(),
+                debugDescription: "Invalid date format: \(s)"
+            )
         }
         return d
     }()
