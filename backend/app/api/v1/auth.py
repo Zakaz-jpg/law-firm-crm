@@ -9,7 +9,7 @@ from app.core.security import (
 )
 from app.database import get_db
 from app.models.user import User, DeviceToken
-from app.schemas.user import Token, TokenRefresh, UserCreate, UserRead, DeviceTokenRegister
+from app.schemas.user import Token, TokenRefresh, UserCreate, UserRead, UserUpdate, PasswordChange, DeviceTokenRegister
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -60,6 +60,33 @@ def refresh(body: TokenRefresh, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserRead)
 def me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.patch("/me", response_model=UserRead)
+def update_me(
+    data: UserUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if data.full_name is not None:
+        current_user.full_name = data.full_name
+    if data.role is not None:
+        current_user.role = data.role
+    db.commit()
+    db.refresh(current_user)
+    return current_user
+
+
+@router.post("/change-password", status_code=204)
+def change_password(
+    data: PasswordChange,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if not verify_password(data.current_password, current_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Неверный текущий пароль")
+    current_user.hashed_password = hash_password(data.new_password)
+    db.commit()
 
 
 @router.post("/device-token", status_code=204)

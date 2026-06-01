@@ -23,6 +23,13 @@ app.add_middleware(
 @app.on_event("startup")
 def create_tables():
     Base.metadata.create_all(bind=engine)
+    with engine.connect() as conn:
+        conn.execute(
+            __import__("sqlalchemy").text(
+                "ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(50) DEFAULT 'lawyer'"
+            )
+        )
+        conn.commit()
 
 
 app.include_router(api_router)

@@ -90,7 +90,19 @@ export const api = {
       return r.json() as Promise<TokenResponse>
     }),
 
-  me: () => request<{ id: number; email: string; full_name: string }>('/auth/me'),
+  me: () => request<{ id: number; email: string; full_name: string; role: string }>('/auth/me'),
+
+  updateProfile: (data: { full_name?: string; role?: string }) =>
+    request<{ id: number; email: string; full_name: string; role: string }>('/auth/me', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  changePassword: (current_password: string, new_password: string) =>
+    request<void>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ current_password, new_password }),
+    }),
 
   // Cases
   cases: (params?: { status?: string; q?: string; client_id?: number }) => {

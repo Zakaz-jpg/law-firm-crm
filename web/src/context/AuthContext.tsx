@@ -3,9 +3,10 @@ import { isAuthenticated, clearTokens, saveTokens, api } from '../api/client'
 
 interface AuthContextType {
   isLoggedIn: boolean
-  user: { id: number; email: string; full_name: string } | null
+  user: { id: number; email: string; full_name: string; role: string } | null
   login: (email: string, password: string, remember?: boolean) => Promise<void>
   logout: () => void
+  updateUser: (data: { full_name?: string; role?: string }) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>(null!)
@@ -34,7 +35,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }
 
-  return <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>{children}</AuthContext.Provider>
+  async function updateUser(data: { full_name?: string; role?: string }) {
+    const updated = await api.updateProfile(data)
+    setUser(updated)
+  }
+
+  return <AuthContext.Provider value={{ isLoggedIn, user, login, logout, updateUser }}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)

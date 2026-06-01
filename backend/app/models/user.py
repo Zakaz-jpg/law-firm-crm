@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 from sqlalchemy import String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -13,6 +13,7 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     full_name: Mapped[str] = mapped_column(String(255))
     hashed_password: Mapped[str] = mapped_column(String(255))
+    role: Mapped[Optional[str]] = mapped_column(String(50), nullable=True, default="lawyer")
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

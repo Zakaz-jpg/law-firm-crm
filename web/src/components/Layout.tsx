@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import s from './Layout.module.css'
 
@@ -91,13 +91,13 @@ export default function Layout() {
         </nav>
 
         <div className={s.footer}>
-          <div className={s.user}>
+          <Link to="/profile" className={s.user}>
             <div className={s.avatar}>{initials}</div>
             <div className={s.userInfo}>
               <div className={s.userName}>{user?.full_name}</div>
               <div className={s.userEmail}>{user?.email}</div>
             </div>
-          </div>
+          </Link>
           <button className={s.logoutBtn} onClick={handleLogout}>
             <LogOutIcon />
             Выйти

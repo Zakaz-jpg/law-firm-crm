@@ -7,6 +7,7 @@ import CaseDetail from './pages/CaseDetail'
 import Clients from './pages/Clients'
 import ClientDetail from './pages/ClientDetail'
 import Dashboard from './pages/Dashboard'
+import Profile from './pages/Profile'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { isLoggedIn } = useAuth()
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/cases/:id" element={<CaseDetail />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/clients/:id" element={<ClientDetail />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>

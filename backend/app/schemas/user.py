@@ -1,5 +1,6 @@
 from __future__ import annotations
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 
@@ -13,10 +14,21 @@ class UserRead(BaseModel):
     id: int
     email: str
     full_name: str
+    role: Optional[str] = "lawyer"
     is_active: bool
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    role: Optional[str] = None
+
+
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
 
 
 class Token(BaseModel):
