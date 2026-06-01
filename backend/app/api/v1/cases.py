@@ -30,6 +30,7 @@ def _load_case(db: Session, case_id: int, user_id: int) -> Case:
 def list_cases(
     status: Optional[str] = None,
     q: Optional[str] = None,
+    client_id: Optional[int] = None,
     skip: int = 0,
     limit: int = 50,
     db: Session = Depends(get_db),
@@ -44,6 +45,8 @@ def list_cases(
         query = query.filter(Case.status == status)
     if q:
         query = query.filter(Case.title.ilike(f"%{q}%"))
+    if client_id:
+        query = query.filter(Case.client_id == client_id)
     return query.order_by(Case.updated_at.desc()).offset(skip).limit(limit).all()
 
 

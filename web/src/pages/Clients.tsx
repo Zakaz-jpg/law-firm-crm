@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import type { Client } from '../api/types'
 import s from './Clients.module.css'
 
 export default function Clients() {
+  const navigate = useNavigate()
   const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -38,7 +40,7 @@ export default function Clients() {
       ) : (
         <div className={s.list}>
           {clients.map(c => (
-            <div key={c.id} className={s.card}>
+            <div key={c.id} className={s.card} onClick={() => navigate(`/clients/${c.id}`)} style={{ cursor: 'pointer' }}>
               <div className={s.avatar}>{c.full_name[0].toUpperCase()}</div>
               <div className={s.info}>
                 <div className={s.name}>{c.full_name}</div>

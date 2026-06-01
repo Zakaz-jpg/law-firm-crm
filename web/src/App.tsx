@@ -5,6 +5,8 @@ import Login from './pages/Login'
 import Cases from './pages/Cases'
 import CaseDetail from './pages/CaseDetail'
 import Clients from './pages/Clients'
+import ClientDetail from './pages/ClientDetail'
+import Dashboard from './pages/Dashboard'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { isLoggedIn } = useAuth()
@@ -13,7 +15,7 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 function PublicRoute({ children }: { children: React.ReactNode }) {
   const { isLoggedIn } = useAuth()
-  return isLoggedIn ? <Navigate to="/cases" replace /> : <>{children}</>
+  return isLoggedIn ? <Navigate to="/" replace /> : <>{children}</>
 }
 
 export default function App() {
@@ -23,10 +25,11 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route element={<PrivateRoute><Layout /></PrivateRoute>}>
-            <Route path="/" element={<Navigate to="/cases" replace />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/cases" element={<Cases />} />
             <Route path="/cases/:id" element={<CaseDetail />} />
             <Route path="/clients" element={<Clients />} />
+            <Route path="/clients/:id" element={<ClientDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

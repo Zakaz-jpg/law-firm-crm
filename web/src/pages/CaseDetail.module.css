@@ -193,3 +193,143 @@
   color: var(--c-text-3);
   flex-shrink: 0;
 }
+
+/* ── Editable header ── */
+.headerEditForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 600px;
+}
+
+.editIconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--c-text-3);
+  padding: 4px 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+.editIconBtn:hover { color: var(--c-gold); background: var(--c-gold-bg); }
+
+.titleRow { align-items: center; }
+
+/* ── Card header with edit button ── */
+.cardHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cardHeaderRow .cardTitle { margin: 0; }
+
+/* ── Edit form inside card ── */
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editField {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.editLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.editInput {
+  padding: 9px 12px;
+  border: 1.5px solid var(--c-border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--c-text);
+  background: var(--c-surface);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.editInput:focus {
+  border-color: var(--c-gold);
+  box-shadow: 0 0 0 3px var(--c-gold-bg);
+}
+
+.editInputSm {
+  padding: 8px 12px;
+  border: 1.5px solid var(--c-border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--c-text);
+  background: var(--c-surface);
+  outline: none;
+  max-width: 240px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.editInputSm:focus {
+  border-color: var(--c-gold);
+  box-shadow: 0 0 0 3px var(--c-gold-bg);
+}
+
+.editTextarea {
+  padding: 10px 12px;
+  border: 1.5px solid var(--c-border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--c-text);
+  background: var(--c-surface);
+  outline: none;
+  resize: vertical;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.editTextarea:focus {
+  border-color: var(--c-gold);
+  box-shadow: 0 0 0 3px var(--c-gold-bg);
+}
+
+.editActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.saveBtn {
+  padding: 9px 20px;
+  background: var(--c-navy);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.saveBtn:hover:not(:disabled) { background: var(--c-navy-2); }
+.saveBtn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.cancelEditBtn {
+  padding: 9px 16px;
+  background: transparent;
+  border: 1.5px solid var(--c-border);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--c-text-2);
+  transition: background 0.15s;
+}
+.cancelEditBtn:hover { background: var(--c-bg); }

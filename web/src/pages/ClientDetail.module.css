@@ -1,0 +1,182 @@
+.page { padding: 36px 40px; }
+
+.loading {
+  text-align: center;
+  padding: 100px;
+  color: var(--c-text-3);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--c-text-2);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 0 20px;
+  transition: color 0.15s;
+}
+.back:hover { color: var(--c-gold); }
+
+/* ── Profile card ── */
+.profileCard {
+  background: var(--c-surface);
+  border-radius: 16px;
+  padding: 28px 32px;
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--c-navy);
+  color: var(--c-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+
+.profileInfo { flex: 1; min-width: 200px; }
+
+.name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+
+.contact {
+  font-size: 13px;
+  color: var(--c-text-2);
+}
+
+.notes {
+  font-size: 13px;
+  color: var(--c-text-2);
+  margin: 10px 0 0;
+  line-height: 1.6;
+}
+
+/* ── Stats ── */
+.stats {
+  display: flex;
+  gap: 24px;
+  border-left: 1px solid var(--c-border);
+  padding-left: 28px;
+  flex-shrink: 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.statNum {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--c-text);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 11px;
+  color: var(--c-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* ── Cases list ── */
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 40px;
+  color: var(--c-text-3);
+  font-size: 15px;
+}
+
+.caseList { display: flex; flex-direction: column; gap: 10px; }
+
+.caseCard {
+  background: var(--c-surface);
+  border-radius: 12px;
+  padding: 16px 20px;
+  border: 1px solid var(--c-border);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+}
+.caseCard:hover {
+  box-shadow: var(--shadow);
+  border-color: rgba(200, 164, 90, 0.35);
+  transform: translateX(2px);
+}
+
+.caseTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.caseTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c-text);
+  line-height: 1.4;
+}
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.caseMeta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.caseMeta span {
+  font-size: 13px;
+  color: var(--c-text-2);
+}

@@ -91,10 +91,11 @@ export const api = {
   me: () => request<{ id: number; email: string; full_name: string }>('/auth/me'),
 
   // Cases
-  cases: (params?: { status?: string; q?: string }) => {
+  cases: (params?: { status?: string; q?: string; client_id?: number }) => {
     const qs = new URLSearchParams()
     if (params?.status) qs.set('status', params.status)
     if (params?.q) qs.set('q', params.q)
+    if (params?.client_id) qs.set('client_id', String(params.client_id))
     const query = qs.toString() ? `?${qs}` : ''
     return request<Case[]>(`/cases${query}`)
   },
@@ -115,6 +116,8 @@ export const api = {
     const query = q ? `?q=${encodeURIComponent(q)}` : ''
     return request<Client[]>(`/clients${query}`)
   },
+
+  getClient: (id: number) => request<Client>(`/clients/${id}`),
 
   createClient: (data: { full_name: string; phone?: string; email?: string; inn?: string }) =>
     request<Client>('/clients', { method: 'POST', body: JSON.stringify(data) }),

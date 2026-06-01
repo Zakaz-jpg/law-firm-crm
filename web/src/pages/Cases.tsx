@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
-import type { Case } from '../api/types'
+import type { Case, Client } from '../api/types'
 import { STATUS_LABELS, STATUS_COLORS, CATEGORY_LABELS } from '../api/types'
 import s from './Cases.module.css'
 
@@ -87,14 +87,25 @@ function CreateCaseModal({ onClose, onCreated }: { onClose: () => void; onCreate
   const [title, setTitle] = useState('')
   const [caseNumber, setCaseNumber] = useState('')
   const [category, setCategory] = useState('')
+  const [clientId, setClientId] = useState('')
+  const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    api.clients().then(setClients).catch(() => {})
+  }, [])
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     try {
-      await api.createCase({ title, case_number: caseNumber || undefined, category: category || undefined })
+      await api.createCase({
+        title,
+        case_number: caseNumber || undefined,
+        category: category || undefined,
+        client_id: clientId ? Number(clientId) : undefined,
+      })
       onCreated()
       onClose()
     } catch (err) {
@@ -114,6 +125,10 @@ function CreateCaseModal({ onClose, onCreated }: { onClose: () => void; onCreate
           <select className={s.input} value={category} onChange={e => setCategory(e.target.value)}>
             <option value="">Категория (необязательно)</option>
             {Object.entries(CATEGORY_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+          </select>
+          <select className={s.input} value={clientId} onChange={e => setClientId(e.target.value)}>
+            <option value="">Клиент (необязательно)</option>
+            {clients.map(c => <option key={c.id} value={c.id}>{c.full_name}</option>)}
           </select>
           {error && <div className={s.error}>{error}</div>}
           <div className={s.modalBtns}>
