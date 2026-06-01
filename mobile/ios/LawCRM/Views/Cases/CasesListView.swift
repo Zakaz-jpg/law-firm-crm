@@ -87,6 +87,7 @@ struct CasesListView: View {
             }
         }
         .listStyle(.insetGrouped)
+        .refreshable { await sync.sync() }
     }
 
     private func filteredCases(status: String) -> [CaseEntity] {
