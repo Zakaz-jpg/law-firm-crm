@@ -160,7 +160,7 @@ final class APIClient {
     // MARK: - Private helpers
 
     private func request(path: String, method: String = "GET") -> URLRequest {
-        var req = URLRequest(url: URL(string: baseURL + path)!)
+        var req = URLRequest(url: URL(string: baseURL + path)!, timeoutInterval: 120)
         req.httpMethod = method
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.setValue("true", forHTTPHeaderField: "bypass-tunnel-reminder")
@@ -209,8 +209,10 @@ final class APIClient {
         } catch let urlError as URLError {
             print("❌ URLError \(urlError.code.rawValue): \(urlError.localizedDescription)")
             switch urlError.code {
-            case .notConnectedToInternet, .networkConnectionLost, .cannotFindHost, .cannotConnectToHost:
+            case .notConnectedToInternet, .networkConnectionLost:
                 throw APIError.networkError
+            case .cannotFindHost, .cannotConnectToHost, .timedOut:
+                throw APIError.serverError("Сервер недоступен. Возможно, он просыпается — подождите 20–30 секунд и повторите.")
             case .appTransportSecurityRequiresSecureConnection:
                 throw APIError.serverError("ATS блокирует HTTP. Проверь Info.plist")
             default:

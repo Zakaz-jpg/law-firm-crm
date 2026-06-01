@@ -11,6 +11,9 @@ def uid(seed):
 
 # ── Source files ──────────────────────────────────────────────────────────────
 
+PLIST_FILE   = "Info.plist"
+PLIST_REF_ID = uid("info_plist_ref")
+
 SWIFT_FILES = [
     ("LawCRMApp.swift",             "LawCRM"),
     ("Models/Models.swift",         "LawCRM/Models"),
@@ -98,6 +101,7 @@ def pbx():
         fname = os.path.basename(rel)
         w(f"\t\t{BUILD_ID[rel]} /* {fname} in Sources */ = {{isa = PBXBuildFile; fileRef = {FILE_REF[rel]} /* {fname} */; }};")
     w(f"\t\t{ASSETS_BUILD_ID} /* Assets.xcassets in Resources */ = {{isa = PBXBuildFile; fileRef = {ASSETS_REF_ID} /* Assets.xcassets */; }};")
+    w(f"\t\t{uid('plist_build')} /* Info.plist in Resources */ = {{isa = PBXBuildFile; fileRef = {PLIST_REF_ID} /* Info.plist */; }};")
     w("/* End PBXBuildFile section */")
     w("")
 
@@ -105,6 +109,7 @@ def pbx():
     w("/* Begin PBXFileReference section */")
     w(f"\t\t{APP_REF_ID} /* LawCRM.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LawCRM.app; sourceTree = BUILT_PRODUCTS_DIR; }};")
     w(f"\t\t{ASSETS_REF_ID} /* Assets.xcassets */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = \"<group>\"; }};")
+    w(f"\t\t{PLIST_REF_ID} /* Info.plist */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = \"<group>\"; }};")
     for rel, _ in SWIFT_FILES:
         fname = os.path.basename(rel)
         w(f"\t\t{FILE_REF[rel]} /* {fname} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {fname}; sourceTree = \"<group>\"; }};")
@@ -147,7 +152,7 @@ def pbx():
     w("\t\t};")
 
     # LawCRM top-level group
-    top_children = children_for_group("LawCRM") + [ASSETS_REF_ID]
+    top_children = children_for_group("LawCRM") + [ASSETS_REF_ID, PLIST_REF_ID]
     w(f"\t\t{LAWCRM_GROUP_ID} /* LawCRM */ = {{")
     w("\t\t\tisa = PBXGroup;")
     w("\t\t\tchildren = (")
@@ -321,14 +326,7 @@ def pbx():
         "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
         "CODE_SIGN_STYLE": "Automatic",
         "CURRENT_PROJECT_VERSION": "1",
-        "GENERATE_INFOPLIST_FILE": "YES",
-        "INFOPLIST_KEY_NSCameraUsageDescription": '"Для прикрепления фото документов к делу"',
-        "INFOPLIST_KEY_NSFaceIDUsageDescription": '"Для входа по Face ID"',
-        "INFOPLIST_KEY_NSPhotoLibraryUsageDescription": '"Для прикрепления фото к делу"',
-        "INFOPLIST_KEY_UIApplicationSceneManifest_Generation": "YES",
-        "INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents": "YES",
-        "INFOPLIST_KEY_UILaunchScreen_Generation": "YES",
-        "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone": '"UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"',
+        "INFOPLIST_FILE": "LawCRM/Info.plist",
         "IPHONEOS_DEPLOYMENT_TARGET": "17.0",
         "LD_RUNPATH_SEARCH_PATHS": '"@executable_path/Frameworks"',
         "MARKETING_VERSION": '"1.0"',

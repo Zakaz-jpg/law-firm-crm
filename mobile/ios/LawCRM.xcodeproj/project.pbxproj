@@ -21,11 +21,13 @@
 		E9748794CCFAE5447C8B46EA /* ClientDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0AE5DE025A7531F5F1C255 /* ClientDetailView.swift */; };
 		AD0C2B6974CC5D080FD15C9A /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E049C4A5FA31650957596FC /* DashboardView.swift */; };
 		ACCF8EEAC867F8AE57BCBC1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249AA357BA35D046B7611EA3 /* Assets.xcassets */; };
+		2BCEC85EC3FF310CAE678EA7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A1DD2B28C6217A4F4C193FF /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3ECE9A2F0678B209E4A706C9 /* LawCRM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LawCRM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		249AA357BA35D046B7611EA3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7A1DD2B28C6217A4F4C193FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C129D9FD6DFE45A3D8ED592 /* LawCRMApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LawCRMApp.swift; sourceTree = "<group>"; };
 		0F972175EEE3FAA3701B62CE /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		E6640E20348CEC422E4D1D3C /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				43CC40AE1D774D156F083FBF,
 				DAAD773C3E3F5DBE98870E75,
 				249AA357BA35D046B7611EA3,
+				7A1DD2B28C6217A4F4C193FF,
 			);
 			name = LawCRM;
 			path = LawCRM;
@@ -348,14 +351,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Для прикрепления фото документов к делу";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Для входа по Face ID";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Для прикрепления фото к делу";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_FILE = LawCRM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				MARKETING_VERSION = "1.0";
@@ -376,14 +372,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Для прикрепления фото документов к делу";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "Для входа по Face ID";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Для прикрепления фото к делу";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_FILE = LawCRM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				MARKETING_VERSION = "1.0";
