@@ -1,0 +1,46 @@
+.page { padding: 28px 32px; }
+.loading { text-align: center; padding: 80px; color: #94a3b8; }
+.back { background: none; border: none; color: #3b82f6; cursor: pointer; font-size: 14px; padding: 0 0 16px; }
+.back:hover { text-decoration: underline; }
+
+.header { margin-bottom: 24px; }
+.titleRow { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.title { font-size: 22px; font-weight: 700; color: #0f172a; margin: 0; }
+.badge { padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 600; margin-top: 2px; }
+.caseNumber { color: #64748b; font-size: 14px; margin-top: 6px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+
+.card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; }
+.cardTitle { font-size: 14px; font-weight: 600; color: #475569; margin: 0 0 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.statusBtns { display: flex; flex-wrap: wrap; gap: 8px; }
+.statusBtn {
+  padding: 7px 14px; border: 1.5px solid #e2e8f0; border-radius: 20px;
+  font-size: 13px; cursor: pointer; background: #fff; color: #475569; transition: all 0.15s;
+}
+.statusBtn:hover:not(:disabled):not(.statusActive) { border-color: #3b82f6; color: #3b82f6; }
+.statusBtn:disabled { cursor: default; }
+.statusActive { font-weight: 600; }
+
+.infoList { display: flex; flex-direction: column; gap: 10px; }
+.infoRow { display: flex; gap: 8px; }
+.infoLabel { font-size: 13px; color: #94a3b8; min-width: 110px; flex-shrink: 0; }
+.infoValue { font-size: 14px; color: #0f172a; }
+
+.desc { font-size: 14px; color: #334155; line-height: 1.6; margin: 0; }
+
+.attachHeader { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.attachHeader .cardTitle { margin: 0; }
+.uploadBtn {
+  padding: 6px 14px; background: #f1f5f9; border: 1px solid #e2e8f0;
+  border-radius: 6px; font-size: 13px; cursor: pointer; color: #3b82f6;
+}
+.uploadBtn:hover:not(:disabled) { background: #eff6ff; }
+.noAttach { font-size: 13px; color: #94a3b8; margin: 0; }
+
+.attachList { display: flex; flex-direction: column; gap: 8px; }
+.attachItem { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: #f8fafc; border-radius: 7px; }
+.attachIcon { font-size: 16px; }
+.attachName { flex: 1; font-size: 13px; color: #334155; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.attachSize { font-size: 12px; color: #94a3b8; flex-shrink: 0; }
