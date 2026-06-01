@@ -37,7 +37,8 @@ jobs:
         working-directory: web
 
       - name: Copy index.html as 404.html for SPA routing
-        run: cp web/dist/index.html web/dist/404.html
+        run: cp dist/index.html dist/404.html
+        working-directory: web
 
       - uses: actions/upload-pages-artifact@v3
         with:
