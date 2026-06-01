@@ -4,8 +4,10 @@ const BASE_URL_KEY = 'lawcrm_base_url'
 const ACCESS_TOKEN_KEY = 'lawcrm_access_token'
 const REFRESH_TOKEN_KEY = 'lawcrm_refresh_token'
 
+const DEFAULT_API_URL = 'https://lawcrm-api.onrender.com'
+
 export function getBaseUrl(): string {
-  return localStorage.getItem(BASE_URL_KEY) || ''
+  return localStorage.getItem(BASE_URL_KEY) || DEFAULT_API_URL
 }
 export function setBaseUrl(url: string) {
   localStorage.setItem(BASE_URL_KEY, url.replace(/\/+$/, ''))

@@ -12,7 +12,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(true)
   const [serverUrl, setServerUrl] = useState(getBaseUrl)
-  const [showServer, setShowServer] = useState(!getBaseUrl())
+  const [showServer, setShowServer] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
