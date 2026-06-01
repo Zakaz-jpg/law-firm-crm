@@ -17,11 +17,14 @@ SWIFT_FILES = [
     ("Network/APIClient.swift",     "LawCRM/Network"),
     ("Network/AuthManager.swift",   "LawCRM/Network"),
     ("Services/SyncService.swift",  "LawCRM/Services"),
-    ("Views/Auth/LoginView.swift",        "LawCRM/Views/Auth"),
-    ("Views/Cases/CasesListView.swift",   "LawCRM/Views/Cases"),
-    ("Views/Cases/CaseDetailView.swift",  "LawCRM/Views/Cases"),
-    ("Views/Cases/CreateCaseView.swift",  "LawCRM/Views/Cases"),
-    ("Views/Clients/ClientsListView.swift","LawCRM/Views/Clients"),
+    ("Views/Auth/LoginView.swift",               "LawCRM/Views/Auth"),
+    ("Views/Cases/CasesListView.swift",          "LawCRM/Views/Cases"),
+    ("Views/Cases/CaseDetailView.swift",         "LawCRM/Views/Cases"),
+    ("Views/Cases/CreateCaseView.swift",         "LawCRM/Views/Cases"),
+    ("Views/Cases/EditCaseView.swift",           "LawCRM/Views/Cases"),
+    ("Views/Clients/ClientsListView.swift",      "LawCRM/Views/Clients"),
+    ("Views/Clients/ClientDetailView.swift",     "LawCRM/Views/Clients"),
+    ("Views/Dashboard/DashboardView.swift",      "LawCRM/Views/Dashboard"),
 ]
 
 # ── UUIDs ─────────────────────────────────────────────────────────────────────
@@ -46,13 +49,14 @@ RELEASE_TARGET  = uid("release_target")
 
 # Groups for subdirectories
 GROUPS = {
-    "LawCRM/Models":        uid("group_models"),
-    "LawCRM/Network":       uid("group_network"),
-    "LawCRM/Services":      uid("group_services"),
-    "LawCRM/Views":         uid("group_views"),
-    "LawCRM/Views/Auth":    uid("group_views_auth"),
-    "LawCRM/Views/Cases":   uid("group_views_cases"),
-    "LawCRM/Views/Clients": uid("group_views_clients"),
+    "LawCRM/Models":          uid("group_models"),
+    "LawCRM/Network":         uid("group_network"),
+    "LawCRM/Services":        uid("group_services"),
+    "LawCRM/Views":           uid("group_views"),
+    "LawCRM/Views/Auth":      uid("group_views_auth"),
+    "LawCRM/Views/Cases":     uid("group_views_cases"),
+    "LawCRM/Views/Clients":   uid("group_views_clients"),
+    "LawCRM/Views/Dashboard": uid("group_views_dashboard"),
 }
 
 FILE_REF = {rel: uid("ref_" + rel) for rel, _ in SWIFT_FILES}
