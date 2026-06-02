@@ -54,10 +54,19 @@ def _run_migrations():
     ]
     for sql in migrations:
         try:
-            with engine.begin() as conn:   # begin() = автоматический commit/rollback
+            with engine.begin() as conn:
                 conn.execute(text(sql))
         except Exception as e:
             log.debug(f"Migration skipped ({e}): {sql[:60]}")
+
+    # Гарантируем что admin@lawcrm.ru всегда имеет роль admin
+    try:
+        with engine.begin() as conn:
+            conn.execute(text(
+                "UPDATE users SET role = 'admin' WHERE email = 'admin@lawcrm.ru' AND role != 'admin'"
+            ))
+    except Exception as e:
+        log.debug(f"Admin role setup skipped: {e}")
 
 
 @app.on_event("shutdown")
