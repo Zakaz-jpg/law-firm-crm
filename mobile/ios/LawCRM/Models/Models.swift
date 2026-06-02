@@ -154,6 +154,25 @@ final class ClientEntity {
     }
 }
 
+// MARK: - Calendar
+
+struct CalendarEventDTO: Codable, Identifiable {
+    let caseId: Int
+    let caseNumber: String?
+    let title: String
+    let court: String?
+    let hearingDate: Date
+
+    var id: Int { caseId }
+
+    enum CodingKeys: String, CodingKey {
+        case title, court
+        case caseId = "case_id"
+        case caseNumber = "case_number"
+        case hearingDate = "hearing_date"
+    }
+}
+
 // MARK: - Helpers
 
 extension String {

@@ -168,6 +168,17 @@ final class APIClient {
         return try await perform(req)
     }
 
+    // MARK: - Calendar
+
+    func calendar(start: Date, end: Date) async throws -> [CalendarEventDTO] {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy-MM-dd"
+        fmt.locale = Locale(identifier: "en_US_POSIX")
+        let s = fmt.string(from: start)
+        let e = fmt.string(from: end)
+        return try await perform(authedRequest(path: "/calendar?start=\(s)&end=\(e)"))
+    }
+
     // MARK: - Sync
 
     func sync() async throws -> SyncResponse {

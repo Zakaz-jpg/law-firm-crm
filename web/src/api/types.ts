@@ -42,6 +42,14 @@ export interface TokenResponse {
   token_type: string
 }
 
+export interface CalendarEvent {
+  case_id: number
+  case_number: string | null
+  title: string
+  court: string | null
+  hearing_date: string
+}
+
 export interface SyncResponse {
   synced_at: string
   cases: Case[]

@@ -56,6 +56,9 @@ struct MainTabView: View {
             CasesListView()
                 .tabItem { Label("Дела", systemImage: "folder") }
 
+            CalendarView()
+                .tabItem { Label("Календарь", systemImage: "calendar") }
+
             ClientsListView()
                 .tabItem { Label("Клиенты", systemImage: "person.2") }
 

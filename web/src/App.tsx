@@ -8,6 +8,7 @@ import Clients from './pages/Clients'
 import ClientDetail from './pages/ClientDetail'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
+import Calendar from './pages/Calendar'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { isLoggedIn } = useAuth()
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/clients" element={<Clients />} />
             <Route path="/clients/:id" element={<ClientDetail />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/calendar" element={<Calendar />} />
           </Route>
         </Routes>
       </BrowserRouter>

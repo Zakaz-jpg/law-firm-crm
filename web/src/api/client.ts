@@ -1,4 +1,4 @@
-import type { Case, Client, Attachment, TokenResponse, SyncResponse } from './types'
+import type { Case, Client, Attachment, TokenResponse, SyncResponse, CalendarEvent } from './types'
 
 const BASE_URL_KEY = 'lawcrm_base_url'
 const ACCESS_TOKEN_KEY = 'lawcrm_access_token'
@@ -142,6 +142,10 @@ export const api = {
     form.append('file', file)
     return request<Attachment>(`/cases/${caseId}/attachments`, { method: 'POST', body: form })
   },
+
+  // Calendar
+  calendar: (start: string, end: string) =>
+    request<CalendarEvent[]>(`/calendar?start=${start}&end=${end}`),
 
   // Sync
   sync: () => request<SyncResponse>('/sync'),

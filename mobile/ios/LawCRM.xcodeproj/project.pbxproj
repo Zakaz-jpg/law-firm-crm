@@ -20,6 +20,7 @@
 		AE9CE27DB79DF50F381966F4 /* ClientsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A5A33D69AD29E3E5C9A54 /* ClientsListView.swift */; };
 		E9748794CCFAE5447C8B46EA /* ClientDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0AE5DE025A7531F5F1C255 /* ClientDetailView.swift */; };
 		AD0C2B6974CC5D080FD15C9A /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E049C4A5FA31650957596FC /* DashboardView.swift */; };
+		8A3AB18F258F2BF0673C9F05 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68CF02C7AD6E9D58AA4AB4A /* CalendarView.swift */; };
 		ACCF8EEAC867F8AE57BCBC1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249AA357BA35D046B7611EA3 /* Assets.xcassets */; };
 		2BCEC85EC3FF310CAE678EA7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A1DD2B28C6217A4F4C193FF /* Info.plist */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 		7C5A5A33D69AD29E3E5C9A54 /* ClientsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientsListView.swift; sourceTree = "<group>"; };
 		8B0AE5DE025A7531F5F1C255 /* ClientDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDetailView.swift; sourceTree = "<group>"; };
 		8E049C4A5FA31650957596FC /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		C68CF02C7AD6E9D58AA4AB4A /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				C55B44836BF4ABEA63B8831D,
 				1C5BBF7635D3948CE19F19DF,
 				EFC4C09D78D162BF3C450CA1,
+				D96EFD42D972D6650D028A7B,
 			);
 			name = Views;
 			path = Views;
@@ -163,6 +166,15 @@
 			);
 			name = Dashboard;
 			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		D96EFD42D972D6650D028A7B /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				C68CF02C7AD6E9D58AA4AB4A,
+			);
+			name = Calendar;
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,6 +250,7 @@
 				AE9CE27DB79DF50F381966F4 /* ClientsListView.swift in Sources */,
 				E9748794CCFAE5447C8B46EA /* ClientDetailView.swift in Sources */,
 				AD0C2B6974CC5D080FD15C9A /* DashboardView.swift in Sources */,
+				8A3AB18F258F2BF0673C9F05 /* CalendarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
