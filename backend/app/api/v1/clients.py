@@ -8,6 +8,7 @@ from app.database import get_db
 from app.models.client import Client
 from app.models.user import User
 from app.schemas.client import ClientCreate, ClientRead, ClientUpdate
+from app.services.audit import log as audit_log
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 
@@ -30,10 +31,12 @@ def list_clients(
 def create_client(
     data: ClientCreate,
     db: Session = Depends(get_db),
-    _: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ):
     client = Client(**data.model_dump())
     db.add(client)
+    db.flush()
+    audit_log(db, current_user.id, "CREATE", "client", client.id, new_value={"full_name": client.full_name})
     db.commit()
     db.refresh(client)
     return client
@@ -52,22 +55,25 @@ def update_client(
     client_id: int,
     data: ClientUpdate,
     db: Session = Depends(get_db),
-    _: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ):
     client = db.get(Client, client_id)
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
-    for field, value in data.model_dump(exclude_unset=True).items():
+    updates = data.model_dump(exclude_unset=True)
+    for field, value in updates.items():
         setattr(client, field, value)
+    audit_log(db, current_user.id, "UPDATE", "client", client_id, new_value=updates)
     db.commit()
     db.refresh(client)
     return client
 
 
 @router.delete("/{client_id}", status_code=204)
-def delete_client(client_id: int, db: Session = Depends(get_db), _: User = Depends(get_current_user)):
+def delete_client(client_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     client = db.get(Client, client_id)
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
+    audit_log(db, current_user.id, "DELETE", "client", client_id, old_value={"full_name": client.full_name})
     db.delete(client)
     db.commit()

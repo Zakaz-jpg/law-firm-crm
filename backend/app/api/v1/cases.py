@@ -9,6 +9,7 @@ from app.models.case import Case, CaseEvent
 from app.models.user import User
 from app.schemas.case import CaseCreate, CaseRead, CaseStatusUpdate, CaseUpdate
 from app.services.deadlines import calculate_deadlines
+from app.services.audit import log as audit_log
 from typing import List as ListType
 
 router = APIRouter(prefix="/cases", tags=["cases"])
@@ -60,8 +61,9 @@ def create_case(
 ):
     case = Case(**data.model_dump(), lawyer_id=current_user.id)
     db.add(case)
+    db.flush()
+    audit_log(db, current_user.id, "CREATE", "case", case.id, new_value={"title": case.title})
     db.commit()
-    db.refresh(case)
     return _load_case(db, case.id, current_user.id)
 
 
@@ -113,6 +115,7 @@ def update_case(
             if getattr(case, k) is None:  # не перезаписываем уже введённое вручную
                 setattr(case, k, v)
 
+    audit_log(db, current_user.id, "UPDATE", "case", case_id, new_value=updates)
     db.commit()
     return _load_case(db, case_id, current_user.id)
 
@@ -138,6 +141,8 @@ def update_status(
         old_value=old_status,
         new_value=data.status,
     ))
+    audit_log(db, current_user.id, "UPDATE", "case", case_id,
+              old_value={"status": old_status}, new_value={"status": data.status})
     db.commit()
     return _load_case(db, case_id, current_user.id)
 
@@ -145,5 +150,6 @@ def update_status(
 @router.delete("/{case_id}", status_code=204)
 def delete_case(case_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     case = _load_case(db, case_id, current_user.id)
+    audit_log(db, current_user.id, "DELETE", "case", case.id, old_value={"title": case.title})
     db.delete(case)
     db.commit()

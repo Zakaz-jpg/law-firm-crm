@@ -15,6 +15,7 @@ from app.models.attachment import Attachment
 from app.models.case import Case
 from app.models.user import User
 from app.schemas.attachment import AttachmentRead
+from app.services.audit import log as audit_log
 
 router = APIRouter(prefix="/cases/{case_id}/attachments", tags=["attachments"])
 
@@ -68,6 +69,9 @@ async def upload_attachment(
         file_size=len(content),
     )
     db.add(attachment)
+    db.flush()
+    audit_log(db, current_user.id, "UPLOAD", "attachment", attachment.id,
+              new_value={"filename": file.filename, "case_id": case_id})
     db.commit()
     db.refresh(attachment)
     return attachment
@@ -116,5 +120,7 @@ def delete_attachment(
     if file_path.exists():
         os.remove(file_path)
 
+    audit_log(db, current_user.id, "DELETE", "attachment", attachment_id,
+              old_value={"filename": attachment.original_filename, "case_id": case_id})
     db.delete(attachment)
     db.commit()

@@ -10,6 +10,7 @@ from app.core.security import (
 from app.database import get_db
 from app.models.user import User, DeviceToken
 from app.schemas.user import Token, TokenRefresh, UserCreate, UserRead, UserUpdate, PasswordChange, DeviceTokenRegister
+from app.services.audit import log as audit_log
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -36,10 +37,13 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     if not user.is_active:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account disabled")
-    return Token(
+    tokens = Token(
         access_token=create_access_token(user.id),
         refresh_token=create_refresh_token(user.id),
     )
+    audit_log(db, user.id, "LOGIN", "user", user.id)
+    db.commit()
+    return tokens
 
 
 @router.post("/refresh", response_model=Token)
