@@ -1,4 +1,5 @@
 from __future__ import annotations
+import json
 import logging
 from pathlib import Path
 
@@ -14,16 +15,22 @@ def _get_firebase():
     if _firebase_app is not None:
         return _firebase_app
 
-    creds_path = Path(settings.FIREBASE_CREDENTIALS_PATH)
-    if not creds_path.exists():
-        logger.warning("Firebase credentials not found, push notifications disabled")
-        return None
-
     try:
         import firebase_admin
         from firebase_admin import credentials
-        cred = credentials.Certificate(str(creds_path))
+
+        # Prod: JSON-строка из env var FIREBASE_CREDENTIALS_JSON
+        if settings.FIREBASE_CREDENTIALS_JSON:
+            cred = credentials.Certificate(json.loads(settings.FIREBASE_CREDENTIALS_JSON))
+        else:
+            cred_path = Path(settings.FIREBASE_CREDENTIALS_PATH)
+            if not cred_path.exists():
+                logger.warning("Firebase credentials not found, push notifications disabled")
+                return None
+            cred = credentials.Certificate(str(cred_path))
+
         _firebase_app = firebase_admin.initialize_app(cred)
+        logger.info("Firebase initialized OK")
         return _firebase_app
     except Exception as e:
         logger.error(f"Failed to initialize Firebase: {e}")

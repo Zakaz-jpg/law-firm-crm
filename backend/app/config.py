@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic_settings import BaseSettings
 
 
@@ -12,7 +13,9 @@ class Settings(BaseSettings):
     UPLOAD_DIR: str = "./uploads"
     MAX_FILE_SIZE_MB: int = 50
 
+    # Dev: путь к файлу; Prod (Render): JSON-строка в env var
     FIREBASE_CREDENTIALS_PATH: str = "./firebase-credentials.json"
+    FIREBASE_CREDENTIALS_JSON: Optional[str] = None
 
     class Config:
         env_file = ".env"

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1 import router as api_router
 from app.database import Base, engine
+from app.services.scheduler import start_scheduler, stop_scheduler
 import app.models  # noqa: F401 — регистрирует все модели перед созданием таблиц
 
 app = FastAPI(
@@ -30,6 +31,12 @@ def create_tables():
             )
         )
         conn.commit()
+    start_scheduler()
+
+
+@app.on_event("shutdown")
+def shutdown_scheduler():
+    stop_scheduler()
 
 
 app.include_router(api_router)
