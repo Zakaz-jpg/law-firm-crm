@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
-import type { Case } from '../api/types'
-import { STATUS_LABELS, STATUS_COLORS, CATEGORY_LABELS } from '../api/types'
+import type { Case, CaseStage } from '../api/types'
+import { STATUS_LABELS, STATUS_COLORS, CATEGORY_LABELS, STAGE_TYPE_LABELS, STAGE_STATUS_LABELS } from '../api/types'
 import s from './CaseDetail.module.css'
 
 const ALL_STATUSES = ['active', 'suspended', 'closed', 'won', 'lost']
@@ -96,6 +96,8 @@ export default function CaseDetail() {
         )}
 
         <EditableDescription caseData={caseData} onSave={saveField} />
+
+        <StagesSection caseId={caseData.id} />
 
         <div className={s.card}>
           <div className={s.attachHeader}>
@@ -304,6 +306,130 @@ function InfoRow({ label, value, red, muted }: { label: string; value: string; r
     <div className={s.infoRow}>
       <span className={s.infoLabel}>{label}:</span>
       <span className={s.infoValue} style={red ? { color: '#dc2626' } : muted ? { color: 'var(--c-text-3)' } : {}}>{value}</span>
+    </div>
+  )
+}
+
+const NEXT_STAGE: Record<string, string> = {
+  first_instance: 'appeal',
+  appeal: 'cassation',
+  cassation: 'supervisory',
+}
+const NEXT_STAGE_LABEL: Record<string, string> = {
+  first_instance: 'Перейти в апелляцию',
+  appeal: 'Перейти в кассацию',
+  cassation: 'Перейти в надзор',
+}
+
+function StagesSection({ caseId }: { caseId: number }) {
+  const [stages, setStages] = useState<CaseStage[]>([])
+  const [loading, setLoading] = useState(true)
+  const [adding, setAdding] = useState(false)
+  const [newType, setNewType] = useState('first_instance')
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    api.stages(caseId).then(setStages).catch(() => setStages([])).finally(() => setLoading(false))
+  }, [caseId])
+
+  const lastStage = stages[stages.length - 1]
+  const nextType = lastStage ? NEXT_STAGE[lastStage.stage_type] : null
+
+  async function addStage() {
+    setSaving(true)
+    try {
+      const created = await api.createStage(caseId, { stage_type: newType, stage_status: 'in_progress' })
+      setStages(prev => [...prev, created])
+      setAdding(false)
+    } finally { setSaving(false) }
+  }
+
+  async function promoteStage() {
+    if (!nextType) return
+    setSaving(true)
+    try {
+      if (lastStage) await api.updateStage(caseId, lastStage.id, { stage_status: 'appealed' })
+      const created = await api.createStage(caseId, { stage_type: nextType, stage_status: 'in_progress' })
+      setStages(prev => [...prev.slice(0, -1), { ...lastStage, stage_status: 'appealed' }, created])
+    } finally { setSaving(false) }
+  }
+
+  const stageColors: Record<string, string> = {
+    not_started: '#6b7280',
+    in_progress: '#2563eb',
+    completed: '#16a34a',
+    appealed: '#d97706',
+  }
+
+  return (
+    <div className={s.card}>
+      <div className={s.cardHeaderRow}>
+        <h3 className={s.cardTitle}>Инстанции</h3>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {lastStage && nextType && (
+            <button className={s.promoteBtn} onClick={promoteStage} disabled={saving}>
+              {NEXT_STAGE_LABEL[lastStage.stage_type]}
+            </button>
+          )}
+          <button className={s.uploadBtn} onClick={() => setAdding(a => !a)}>
+            {adding ? 'Отмена' : '+ Добавить'}
+          </button>
+        </div>
+      </div>
+
+      {adding && (
+        <div className={s.stageAddForm}>
+          <select className={s.stageSelect} value={newType} onChange={e => setNewType(e.target.value)}>
+            {Object.entries(STAGE_TYPE_LABELS).map(([k, v]) => (
+              <option key={k} value={k}>{v}</option>
+            ))}
+          </select>
+          <button className={s.saveBtn} onClick={addStage} disabled={saving}>
+            {saving ? 'Создаю...' : 'Создать'}
+          </button>
+        </div>
+      )}
+
+      {loading ? (
+        <p className={s.noAttach}>Загрузка...</p>
+      ) : stages.length === 0 ? (
+        <p className={s.noAttach}>Стадий ещё нет. Нажмите «+ Добавить» чтобы начать.</p>
+      ) : (
+        <div className={s.stageList}>
+          {stages.map((st, i) => (
+            <div key={st.id} className={s.stageItem}>
+              <div className={s.stageConnector}>
+                <div className={s.stageDot} style={{ background: stageColors[st.stage_status] ?? '#6b7280' }} />
+                {i < stages.length - 1 && <div className={s.stageLine} />}
+              </div>
+              <div className={s.stageBody}>
+                <div className={s.stageHeader}>
+                  <span className={s.stageType}>{st.stage_type_label ?? STAGE_TYPE_LABELS[st.stage_type] ?? st.stage_type}</span>
+                  <span className={s.stageStatus} style={{ color: stageColors[st.stage_status] }}>
+                    {st.stage_status_label ?? STAGE_STATUS_LABELS[st.stage_status] ?? st.stage_status}
+                  </span>
+                </div>
+                {st.court_name && <div className={s.stageMeta}>{st.court_name}</div>}
+                {st.judge_name && <div className={s.stageMeta}>Судья: {st.judge_name}</div>}
+                {st.hearing_date && (
+                  <div className={s.stageMeta}>
+                    Заседание: {new Date(st.hearing_date).toLocaleString('ru', { dateStyle: 'short', timeStyle: 'short' })}
+                    {st.courtroom && `, зал ${st.courtroom}`}
+                  </div>
+                )}
+                {st.decision_date && <div className={s.stageMeta}>Решение: {new Date(st.decision_date).toLocaleDateString('ru')}</div>}
+                {st.appeal_deadline && (
+                  <div className={s.stageMeta} style={{ color: new Date(st.appeal_deadline) < new Date() ? '#dc2626' : undefined }}>
+                    Срок обжалования: {new Date(st.appeal_deadline).toLocaleDateString('ru')}
+                    {new Date(st.appeal_deadline) < new Date() && !st.appeal_filed_date && ' ⚠️ просрочен'}
+                  </div>
+                )}
+                {st.result && <div className={s.stageResult}>{st.result}</div>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

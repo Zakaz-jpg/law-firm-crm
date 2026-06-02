@@ -1,4 +1,4 @@
-import type { Case, Client, Attachment, TokenResponse, SyncResponse, CalendarEvent } from './types'
+import type { Case, Client, Attachment, TokenResponse, SyncResponse, CalendarEvent, CaseStage, CompanyLawyer } from './types'
 
 const BASE_URL_KEY = 'lawcrm_base_url'
 const ACCESS_TOKEN_KEY = 'lawcrm_access_token'
@@ -142,6 +142,21 @@ export const api = {
     form.append('file', file)
     return request<Attachment>(`/cases/${caseId}/attachments`, { method: 'POST', body: form })
   },
+
+  // Stages
+  stages: (caseId: number) => request<CaseStage[]>(`/cases/${caseId}/stages`),
+
+  createStage: (caseId: number, data: Partial<CaseStage>) =>
+    request<CaseStage>(`/cases/${caseId}/stages`, { method: 'POST', body: JSON.stringify(data) }),
+
+  updateStage: (caseId: number, stageId: number, data: Partial<CaseStage>) =>
+    request<CaseStage>(`/cases/${caseId}/stages/${stageId}`, { method: 'PATCH', body: JSON.stringify(data) }),
+
+  deleteStage: (caseId: number, stageId: number) =>
+    request<void>(`/cases/${caseId}/stages/${stageId}`, { method: 'DELETE' }),
+
+  // Lawyers
+  lawyers: () => request<CompanyLawyer[]>('/lawyers'),
 
   // Calendar
   calendar: (start: string, end: string) =>

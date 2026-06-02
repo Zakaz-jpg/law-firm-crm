@@ -42,6 +42,53 @@ export interface TokenResponse {
   token_type: string
 }
 
+export interface CaseStage {
+  id: number
+  case_id: number
+  stage_type: string
+  stage_type_label: string | null
+  court_name: string | null
+  judge_name: string | null
+  case_number_stage: string | null
+  hearing_date: string | null
+  courtroom: string | null
+  hearing_format: string | null
+  vks_link: string | null
+  result: string | null
+  stage_status: string
+  stage_status_label: string | null
+  decision_date: string | null
+  full_decision_date: string | null
+  appeal_deadline: string | null
+  appeal_filed_date: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface CompanyLawyer {
+  id: number
+  full_name: string
+  position: string | null
+  phone: string | null
+  email: string | null
+  is_active: boolean
+}
+
+export const STAGE_TYPE_LABELS: Record<string, string> = {
+  first_instance: 'Первая инстанция',
+  appeal: 'Апелляция',
+  cassation: 'Кассация',
+  supervisory: 'Надзор',
+  review: 'Пересмотр',
+}
+
+export const STAGE_STATUS_LABELS: Record<string, string> = {
+  not_started: 'Не начата',
+  in_progress: 'В процессе',
+  completed: 'Завершена',
+  appealed: 'Обжалована',
+}
+
 export interface CalendarEvent {
   case_id: number
   case_number: string | null

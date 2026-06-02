@@ -168,6 +168,12 @@ final class APIClient {
         return try await perform(req)
     }
 
+    // MARK: - Stages
+
+    func stages(caseId: Int) async throws -> [CaseStageDTO] {
+        return try await perform(authedRequest(path: "/cases/\(caseId)/stages"))
+    }
+
     // MARK: - Calendar
 
     func calendar(start: Date, end: Date) async throws -> [CalendarEventDTO] {

@@ -43,6 +43,9 @@ struct CaseDetailView: View {
                         // Детали
                         infoCard
 
+                        // Стадии
+                        CaseStagesSection(caseId: caseId)
+
                         // Вложения
                         attachmentsSection(dto: dto)
                     }
@@ -233,5 +236,89 @@ struct AttachmentRowView: View {
                 .foregroundStyle(.secondary)
         }
         .padding(.vertical, 4)
+    }
+}
+
+// MARK: - Stages Section
+
+struct CaseStagesSection: View {
+    let caseId: Int
+    @State private var stages: [CaseStageDTO] = []
+    @State private var loading = true
+
+    private let statusColors: [String: Color] = [
+        "not_started": .secondary,
+        "in_progress": .blue,
+        "completed": .green,
+        "appealed": .orange,
+    ]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Инстанции")
+                .font(.headline)
+
+            if loading {
+                ProgressView().frame(maxWidth: .infinity)
+            } else if stages.isEmpty {
+                Text("Стадий нет")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(Array(stages.enumerated()), id: \.element.id) { idx, stage in
+                    HStack(alignment: .top, spacing: 12) {
+                        VStack(spacing: 0) {
+                            Circle()
+                                .fill(statusColors[stage.stageStatus] ?? .secondary)
+                                .frame(width: 10, height: 10)
+                                .padding(.top, 4)
+                            if idx < stages.count - 1 {
+                                Rectangle()
+                                    .fill(Color(.systemGray4))
+                                    .frame(width: 2)
+                                    .frame(maxHeight: .infinity)
+                            }
+                        }
+                        .frame(width: 10)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text(stage.stageTypeDisplay)
+                                    .font(.subheadline.bold())
+                                Spacer()
+                                Text(stage.stageStatusDisplay)
+                                    .font(.caption)
+                                    .foregroundStyle(statusColors[stage.stageStatus] ?? .secondary)
+                            }
+                            if let court = stage.courtName {
+                                Text(court).font(.caption).foregroundStyle(.secondary)
+                            }
+                            if let judge = stage.judgeName {
+                                Text("Судья: \(judge)").font(.caption).foregroundStyle(.secondary)
+                            }
+                            if let date = stage.hearingDate {
+                                Text("Заседание: \(date.formatted(date: .abbreviated, time: .shortened))")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                            if let deadline = stage.appealDeadline {
+                                Text("Срок обжалования: \(deadline)")
+                                    .font(.caption)
+                                    .foregroundStyle(stage.appealFiledDate == nil ? .red : .secondary)
+                            }
+                        }
+                        .padding(.bottom, 12)
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .task {
+            do {
+                stages = try await APIClient.shared.stages(caseId: caseId)
+            } catch { stages = [] }
+            loading = false
+        }
     }
 }

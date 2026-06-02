@@ -333,3 +333,110 @@
   transition: background 0.15s;
 }
 .cancelEditBtn:hover { background: var(--c-bg); }
+
+/* ── Stages ── */
+.promoteBtn {
+  padding: 7px 16px;
+  background: var(--c-gold);
+  color: var(--c-navy);
+  border: none;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.promoteBtn:hover:not(:disabled) { opacity: 0.85; }
+.promoteBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.stageAddForm {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.stageSelect {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid var(--c-border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--c-text);
+  background: var(--c-surface);
+  outline: none;
+  cursor: pointer;
+}
+.stageSelect:focus { border-color: var(--c-gold); }
+
+.stageList { display: flex; flex-direction: column; }
+
+.stageItem {
+  display: flex;
+  gap: 14px;
+  min-height: 64px;
+}
+
+.stageConnector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 3px;
+}
+
+.stageDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid var(--c-surface);
+  box-shadow: 0 0 0 2px currentColor;
+}
+
+.stageLine {
+  width: 2px;
+  flex: 1;
+  background: var(--c-border);
+  margin: 4px 0;
+}
+
+.stageBody {
+  flex: 1;
+  padding-bottom: 16px;
+}
+
+.stageHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.stageType {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-text);
+}
+
+.stageStatus {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.stageMeta {
+  font-size: 13px;
+  color: var(--c-text-2);
+  margin-top: 2px;
+}
+
+.stageResult {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--c-text);
+  background: var(--c-bg);
+  border-radius: 6px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--c-gold);
+}

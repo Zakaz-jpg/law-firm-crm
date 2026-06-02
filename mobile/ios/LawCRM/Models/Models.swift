@@ -154,6 +154,68 @@ final class ClientEntity {
     }
 }
 
+// MARK: - Case Stage
+
+struct CaseStageDTO: Codable, Identifiable {
+    let id: Int
+    let caseId: Int
+    let stageType: String
+    let stageTypeLabel: String?
+    let courtName: String?
+    let judgeName: String?
+    let caseNumberStage: String?
+    let hearingDate: Date?
+    let courtroom: String?
+    let result: String?
+    let stageStatus: String
+    let stageStatusLabel: String?
+    let decisionDate: String?
+    let fullDecisionDate: String?
+    let appealDeadline: String?
+    let appealFiledDate: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, result, courtroom
+        case caseId = "case_id"
+        case stageType = "stage_type"
+        case stageTypeLabel = "stage_type_label"
+        case courtName = "court_name"
+        case judgeName = "judge_name"
+        case caseNumberStage = "case_number_stage"
+        case hearingDate = "hearing_date"
+        case stageStatus = "stage_status"
+        case stageStatusLabel = "stage_status_label"
+        case decisionDate = "decision_date"
+        case fullDecisionDate = "full_decision_date"
+        case appealDeadline = "appeal_deadline"
+        case appealFiledDate = "appeal_filed_date"
+    }
+
+    var stageTypeDisplay: String {
+        stageTypeLabel ?? {
+            switch stageType {
+            case "first_instance": return "Первая инстанция"
+            case "appeal": return "Апелляция"
+            case "cassation": return "Кассация"
+            case "supervisory": return "Надзор"
+            default: return stageType
+            }
+        }()
+    }
+
+    var stageStatusDisplay: String {
+        stageStatusLabel ?? {
+            switch stageStatus {
+            case "not_started": return "Не начата"
+            case "in_progress": return "В процессе"
+            case "completed": return "Завершена"
+            case "appealed": return "Обжалована"
+            default: return stageStatus
+            }
+        }()
+    }
+}
+
 // MARK: - Calendar
 
 struct CalendarEventDTO: Codable, Identifiable {
