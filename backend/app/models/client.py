@@ -19,4 +19,4 @@ class Client(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    cases: Mapped[List["Case"]] = relationship("Case", back_populates="client")
+    cases: Mapped[List["Case"]] = relationship("Case", back_populates="client", foreign_keys="[Case.client_id]")
