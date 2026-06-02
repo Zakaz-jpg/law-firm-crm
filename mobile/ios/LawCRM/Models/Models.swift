@@ -154,6 +154,21 @@ final class ClientEntity {
     }
 }
 
+// MARK: - User
+
+struct UserDTO: Codable {
+    var id: Int
+    var email: String
+    var fullName: String
+    var role: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, email
+        case fullName = "full_name"
+        case role
+    }
+}
+
 // MARK: - Case Stage
 
 struct CaseStageDTO: Codable, Identifiable {

@@ -62,6 +62,9 @@ struct MainTabView: View {
             ClientsListView()
                 .tabItem { Label("Клиенты", systemImage: "person.2") }
 
+            ProfileView()
+                .tabItem { Label("Профиль", systemImage: "person.circle") }
+
             SettingsView()
                 .tabItem { Label("Настройки", systemImage: "gear") }
         }

@@ -149,6 +149,8 @@ def update_status(
 
 @router.delete("/{case_id}", status_code=204)
 def delete_case(case_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Удаление дел доступно только администратору")
     case = _load_case(db, case_id, current_user.id)
     audit_log(db, current_user.id, "DELETE", "case", case.id, old_value={"title": case.title})
     db.delete(case)

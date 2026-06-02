@@ -73,6 +73,24 @@ final class APIClient {
         return try await perform(req)
     }
 
+    func me() async throws -> UserDTO {
+        return try await perform(authedRequest(path: "/auth/me"))
+    }
+
+    func updateProfile(fullName: String, role: String?) async throws -> UserDTO {
+        var req = authedRequest(path: "/auth/me", method: "PATCH")
+        var body: [String: Any] = ["full_name": fullName]
+        if let role { body["role"] = role }
+        req.httpBody = try JSONSerialization.data(withJSONObject: body)
+        return try await perform(req)
+    }
+
+    func changePassword(current: String, new: String) async throws {
+        var req = authedRequest(path: "/auth/change-password", method: "POST")
+        req.httpBody = try encoder.encode(["current_password": current, "new_password": new])
+        _ = try await performRaw(req)
+    }
+
     func registerDeviceToken(_ deviceToken: String, platform: String = "ios") async throws {
         var req = authedRequest(path: "/auth/device-token", method: "POST")
         req.httpBody = try encoder.encode(["token": deviceToken, "platform": platform])

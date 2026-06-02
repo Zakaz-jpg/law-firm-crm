@@ -71,6 +71,8 @@ def update_client(
 
 @router.delete("/{client_id}", status_code=204)
 def delete_client(client_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Удаление клиентов доступно только администратору")
     client = db.get(Client, client_id)
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")

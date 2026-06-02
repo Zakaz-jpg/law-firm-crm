@@ -21,6 +21,7 @@
 		E9748794CCFAE5447C8B46EA /* ClientDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0AE5DE025A7531F5F1C255 /* ClientDetailView.swift */; };
 		AD0C2B6974CC5D080FD15C9A /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E049C4A5FA31650957596FC /* DashboardView.swift */; };
 		8A3AB18F258F2BF0673C9F05 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68CF02C7AD6E9D58AA4AB4A /* CalendarView.swift */; };
+		5A31F090668DA87E02BA521C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B84554A4C58F11B6F41B3D /* ProfileView.swift */; };
 		ACCF8EEAC867F8AE57BCBC1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249AA357BA35D046B7611EA3 /* Assets.xcassets */; };
 		2BCEC85EC3FF310CAE678EA7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A1DD2B28C6217A4F4C193FF /* Info.plist */; };
 /* End PBXBuildFile section */
@@ -43,6 +44,7 @@
 		8B0AE5DE025A7531F5F1C255 /* ClientDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDetailView.swift; sourceTree = "<group>"; };
 		8E049C4A5FA31650957596FC /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		C68CF02C7AD6E9D58AA4AB4A /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		78B84554A4C58F11B6F41B3D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				1C5BBF7635D3948CE19F19DF,
 				EFC4C09D78D162BF3C450CA1,
 				D96EFD42D972D6650D028A7B,
+				773035B419DA4F3C9877A89B,
 			);
 			name = Views;
 			path = Views;
@@ -175,6 +178,15 @@
 			);
 			name = Calendar;
 			path = Calendar;
+			sourceTree = "<group>";
+		};
+		773035B419DA4F3C9877A89B /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				78B84554A4C58F11B6F41B3D,
+			);
+			name = Profile;
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +263,7 @@
 				E9748794CCFAE5447C8B46EA /* ClientDetailView.swift in Sources */,
 				AD0C2B6974CC5D080FD15C9A /* DashboardView.swift in Sources */,
 				8A3AB18F258F2BF0673C9F05 /* CalendarView.swift in Sources */,
+				5A31F090668DA87E02BA521C /* ProfileView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
