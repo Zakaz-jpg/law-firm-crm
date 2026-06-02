@@ -397,8 +397,11 @@ def create_assets():
 
     appicon = os.path.join(assets_dir, "AppIcon.appiconset")
     os.makedirs(appicon, exist_ok=True)
-    with open(os.path.join(appicon, "Contents.json"), "w") as f:
-        f.write('{\n  "images" : [],\n  "info" : { "author" : "xcode", "version" : 1 }\n}\n')
+    # Не перезаписываем Contents.json если уже есть иконки
+    appicon_json = os.path.join(appicon, "Contents.json")
+    if not os.path.exists(appicon_json) or '"images" : []' in open(appicon_json).read():
+        with open(appicon_json, "w") as f:
+            f.write('{\n  "images" : [],\n  "info" : { "author" : "xcode", "version" : 1 }\n}\n')
 
     accent = os.path.join(assets_dir, "AccentColor.colorset")
     os.makedirs(accent, exist_ok=True)
