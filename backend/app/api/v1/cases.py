@@ -8,6 +8,7 @@ from app.database import get_db
 from app.models.case import Case, CaseEvent
 from app.models.user import User
 from app.schemas.case import CaseCreate, CaseRead, CaseStatusUpdate, CaseUpdate
+from app.services.deadlines import calculate_deadlines
 
 router = APIRouter(prefix="/cases", tags=["cases"])
 
@@ -76,8 +77,18 @@ def update_case(
     current_user: User = Depends(get_current_user),
 ):
     case = _load_case(db, case_id, current_user.id)
-    for field, value in data.model_dump(exclude_unset=True).items():
+    updates = data.model_dump(exclude_unset=True)
+    for field, value in updates.items():
         setattr(case, field, value)
+
+    # Авторасчёт сроков при сохранении full_decision_date
+    if "full_decision_date" in updates and updates["full_decision_date"]:
+        fdd = updates["full_decision_date"]
+        deadlines = calculate_deadlines(fdd, case.court_type)
+        for k, v in deadlines.items():
+            if getattr(case, k) is None:  # не перезаписываем уже введённое вручную
+                setattr(case, k, v)
+
     db.commit()
     return _load_case(db, case_id, current_user.id)
 

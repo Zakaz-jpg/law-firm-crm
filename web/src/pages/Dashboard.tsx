@@ -34,6 +34,24 @@ export default function Dashboard() {
     c => c.next_hearing_date && new Date(c.next_hearing_date) < now && c.status === 'active'
   )
 
+  const today = now.toISOString().slice(0, 10)
+  const overdueDeadlines = cases.filter(c =>
+    c.status === 'active' && (
+      (c.appeal_deadline && c.appeal_deadline < today && !c.appeal_filed_date) ||
+      (c.cassation_deadline && c.cassation_deadline < today && !c.cassation_filed_date) ||
+      (c.supervisory_deadline && c.supervisory_deadline < today && !c.supervisory_filed_date)
+    )
+  )
+  const upcomingDeadlines = cases.filter(c => {
+    if (c.status !== 'active') return false
+    const in7 = new Date(now.getTime() + 7 * 86400000).toISOString().slice(0, 10)
+    return (
+      (c.appeal_deadline && c.appeal_deadline >= today && c.appeal_deadline <= in7 && !c.appeal_filed_date) ||
+      (c.cassation_deadline && c.cassation_deadline >= today && c.cassation_deadline <= in7 && !c.cassation_filed_date) ||
+      (c.supervisory_deadline && c.supervisory_deadline >= today && c.supervisory_deadline <= in7 && !c.supervisory_filed_date)
+    )
+  })
+
   const hour = now.getHours()
   const greeting = hour < 12 ? 'Доброе утро' : hour < 18 ? 'Добрый день' : 'Добрый вечер'
   const firstName = user?.full_name?.split(' ')[0] ?? ''
@@ -64,6 +82,31 @@ export default function Dashboard() {
               </h2>
               <div className={s.caseList}>
                 {overdue.map(c => <CaseRow key={c.id} c={c} onClick={() => navigate(`/cases/${c.id}`)} overdue />)}
+              </div>
+            </div>
+          )}
+
+          {overdueDeadlines.length > 0 && (
+            <div className={s.section}>
+              <h2 className={s.sectionTitle}>
+                <span className={s.alertDot} />
+                Просроченные сроки обжалования ({overdueDeadlines.length})
+              </h2>
+              <div className={s.caseList}>
+                {overdueDeadlines.map(c => (
+                  <DeadlineCaseRow key={c.id} c={c} today={today} onClick={() => navigate(`/cases/${c.id}`)} overdue />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {upcomingDeadlines.length > 0 && (
+            <div className={s.section}>
+              <h2 className={s.sectionTitle}>Сроки обжалования (ближайшие 7 дней)</h2>
+              <div className={s.caseList}>
+                {upcomingDeadlines.map(c => (
+                  <DeadlineCaseRow key={c.id} c={c} today={today} onClick={() => navigate(`/cases/${c.id}`)} />
+                ))}
               </div>
             </div>
           )}
@@ -103,6 +146,35 @@ function StatCard({ label, value, color }: { label: string; value: number; color
     <div className={s.statCard}>
       <span className={s.statValue} style={{ color }}>{value}</span>
       <span className={s.statLabel}>{label}</span>
+    </div>
+  )
+}
+
+function DeadlineCaseRow({ c, today, onClick, overdue }: { c: Case; today: string; onClick: () => void; overdue?: boolean }) {
+  const deadlines = [
+    { label: 'Апелл.', date: c.appeal_deadline, filed: c.appeal_filed_date },
+    { label: 'Касс.', date: c.cassation_deadline, filed: c.cassation_filed_date },
+    { label: 'Надзор', date: c.supervisory_deadline, filed: c.supervisory_filed_date },
+  ].filter(d => d.date && !d.filed && (overdue ? d.date < today : d.date >= today))
+
+  return (
+    <div className={s.caseRow} onClick={onClick}>
+      <div className={s.caseRowLeft}>
+        <span className={s.caseRowTitle}>{c.title}</span>
+        <div className={s.caseRowMeta}>
+          {c.case_number && <span>№ {c.case_number}</span>}
+          {deadlines.map(d => (
+            <span key={d.label} style={{ color: overdue ? '#dc2626' : '#d97706' }}>
+              {d.label}: {new Date(d.date!).toLocaleDateString('ru', { day: 'numeric', month: 'short' })}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className={s.caseRowRight}>
+        <span className={s.badge} style={{ color: overdue ? '#dc2626' : '#d97706', background: (overdue ? '#dc2626' : '#d97706') + '22' }}>
+          {overdue ? 'Просрочен' : 'Срок скоро'}
+        </span>
+      </div>
     </div>
   )
 }

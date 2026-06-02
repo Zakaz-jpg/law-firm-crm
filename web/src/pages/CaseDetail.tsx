@@ -97,6 +97,8 @@ export default function CaseDetail() {
 
         <EditableDescription caseData={caseData} onSave={saveField} />
 
+        <DeadlinesSection caseData={caseData} onSave={saveField} />
+
         <StagesSection caseId={caseData.id} />
 
         <div className={s.card}>
@@ -306,6 +308,143 @@ function InfoRow({ label, value, red, muted }: { label: string; value: string; r
     <div className={s.infoRow}>
       <span className={s.infoLabel}>{label}:</span>
       <span className={s.infoValue} style={red ? { color: '#dc2626' } : muted ? { color: 'var(--c-text-3)' } : {}}>{value}</span>
+    </div>
+  )
+}
+
+function daysUntil(dateStr: string | null | undefined): number | null {
+  if (!dateStr) return null
+  const diff = new Date(dateStr).getTime() - new Date().setHours(0, 0, 0, 0)
+  return Math.ceil(diff / 86400000)
+}
+
+function DeadlineRow({
+  label, deadline, filed, onFiledSave,
+}: {
+  label: string
+  deadline: string | null | undefined
+  filed: string | null | undefined
+  onFiledSave: (d: string) => void
+}) {
+  const days = daysUntil(deadline)
+  if (!deadline) return null
+
+  let color = '#16a34a'
+  let badge = ''
+  if (filed) {
+    color = '#6b7280'
+    badge = 'Подано'
+  } else if (days === null) {
+    color = '#6b7280'
+  } else if (days < 0) {
+    color = '#dc2626'
+    badge = 'Просрочен'
+  } else if (days <= 3) {
+    color = '#dc2626'
+    badge = `${days} дн.`
+  } else if (days <= 7) {
+    color = '#d97706'
+    badge = `${days} дн.`
+  } else {
+    badge = `${days} дн.`
+  }
+
+  return (
+    <div className={s.deadlineRow}>
+      <div className={s.deadlineLeft}>
+        <span className={s.deadlineLabel}>{label}</span>
+        <span className={s.deadlineDate}>{new Date(deadline).toLocaleDateString('ru')}</span>
+      </div>
+      <div className={s.deadlineRight}>
+        {!filed ? (
+          <button
+            className={s.deadlineFiledBtn}
+            onClick={() => onFiledSave(new Date().toISOString().slice(0, 10))}
+            title="Отметить как поданную"
+          >
+            Подать
+          </button>
+        ) : (
+          <span className={s.deadlineFiledDate}>
+            подано {new Date(filed).toLocaleDateString('ru')}
+          </span>
+        )}
+        <span className={s.deadlineBadge} style={{ background: color }}>{badge}</span>
+      </div>
+    </div>
+  )
+}
+
+function DeadlinesSection({ caseData, onSave }: { caseData: Case; onSave: (p: Partial<Case>) => Promise<void> }) {
+  const [editing, setEditing] = useState(false)
+  const [fdd, setFdd] = useState(caseData.full_decision_date?.slice(0, 10) ?? '')
+  const [dd, setDd] = useState(caseData.decision_date?.slice(0, 10) ?? '')
+  const [saving, setSaving] = useState(false)
+
+  const hasAnyDeadline = !!(caseData.appeal_deadline || caseData.cassation_deadline || caseData.supervisory_deadline)
+
+  async function save() {
+    setSaving(true)
+    try {
+      await onSave({
+        decision_date: dd || null,
+        full_decision_date: fdd || null,
+      } as Partial<Case>)
+      setEditing(false)
+    } finally { setSaving(false) }
+  }
+
+  return (
+    <div className={s.card}>
+      <div className={s.cardHeaderRow}>
+        <h3 className={s.cardTitle}>Процессуальные сроки</h3>
+        <button className={s.editIconBtn} onClick={() => setEditing(e => !e)} title={editing ? 'Закрыть' : 'Редактировать'}>
+          <PencilIcon />
+        </button>
+      </div>
+
+      {editing && (
+        <div className={s.deadlineEditForm}>
+          <label className={s.deadlineEditLabel}>
+            Дата решения
+            <input type="date" className={s.editInput} value={dd} onChange={e => setDd(e.target.value)} />
+          </label>
+          <label className={s.deadlineEditLabel}>
+            Дата решения (окончательная форма)
+            <input type="date" className={s.editInput} value={fdd} onChange={e => setFdd(e.target.value)} />
+          </label>
+          <div className={s.editActions}>
+            <button className={s.saveBtn} onClick={save} disabled={saving}>{saving ? 'Сохраняю...' : 'Сохранить и рассчитать'}</button>
+            <button className={s.cancelEditBtn} onClick={() => setEditing(false)}>Отмена</button>
+          </div>
+          <p className={s.deadlineHint}>Сроки рассчитываются автоматически от даты в окончательной форме.</p>
+        </div>
+      )}
+
+      {!hasAnyDeadline && !editing ? (
+        <p className={s.noAttach}>Укажите дату решения для автоматического расчёта сроков.</p>
+      ) : (
+        <div className={s.deadlineList}>
+          <DeadlineRow
+            label="Апелляция"
+            deadline={caseData.appeal_deadline}
+            filed={caseData.appeal_filed_date}
+            onFiledSave={d => onSave({ appeal_filed_date: d } as Partial<Case>)}
+          />
+          <DeadlineRow
+            label="Кассация"
+            deadline={caseData.cassation_deadline}
+            filed={caseData.cassation_filed_date}
+            onFiledSave={d => onSave({ cassation_filed_date: d } as Partial<Case>)}
+          />
+          <DeadlineRow
+            label="Надзор (ВС)"
+            deadline={caseData.supervisory_deadline}
+            filed={caseData.supervisory_filed_date}
+            onFiledSave={d => onSave({ supervisory_filed_date: d } as Partial<Case>)}
+          />
+        </div>
+      )}
     </div>
   )
 }

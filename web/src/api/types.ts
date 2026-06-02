@@ -5,12 +5,27 @@ export interface Case {
   status: string
   category: string | null
   court: string | null
+  court_type: string | null
   description: string | null
   next_hearing_date: string | null
+  external_case_url: string | null
+  amount: string | null
   lawyer_id: number
   client_id: number | null
+  defendant_id: number | null
+  lead_lawyer_id: number | null
+  current_stage_id: number | null
   client: Client | null
+  defendant: Client | null
   attachments: Attachment[]
+  decision_date: string | null
+  full_decision_date: string | null
+  appeal_deadline: string | null
+  appeal_filed_date: string | null
+  cassation_deadline: string | null
+  cassation_filed_date: string | null
+  supervisory_deadline: string | null
+  supervisory_filed_date: string | null
   created_at: string
   updated_at: string
 }
@@ -109,6 +124,7 @@ export const STATUS_LABELS: Record<string, string> = {
   closed: 'Закрыто',
   won: 'Выиграно',
   lost: 'Проиграно',
+  deadline_missed: 'Срок пропущен',
 }
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -125,4 +141,5 @@ export const STATUS_COLORS: Record<string, string> = {
   closed: '#6b7280',
   won: '#2563eb',
   lost: '#dc2626',
+  deadline_missed: '#dc2626',
 }
