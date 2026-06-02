@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
-import type { Case, CaseStage } from '../api/types'
+import type { Case, CaseStage, EnforcementRecord } from '../api/types'
 import { STATUS_LABELS, STATUS_COLORS, CATEGORY_LABELS, STAGE_TYPE_LABELS, STAGE_STATUS_LABELS } from '../api/types'
 import s from './CaseDetail.module.css'
 
@@ -98,6 +98,8 @@ export default function CaseDetail() {
         <EditableDescription caseData={caseData} onSave={saveField} />
 
         <DeadlinesSection caseData={caseData} onSave={saveField} />
+
+        <EnforcementSection caseId={caseData.id} />
 
         <StagesSection caseId={caseData.id} />
 
@@ -564,6 +566,86 @@ function StagesSection({ caseId }: { caseId: number }) {
                   </div>
                 )}
                 {st.result && <div className={s.stageResult}>{st.result}</div>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function EnforcementSection({ caseId }: { caseId: number }) {
+  const [records, setRecords] = useState<EnforcementRecord[]>([])
+  const [loading, setLoading] = useState(true)
+  const [adding, setAdding] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [form, setForm] = useState({ fssp_number: '', bailiff_name: '', fssp_status: '', fssp_url: '', notes: '' })
+
+  useEffect(() => {
+    api.enforcement(caseId).then(setRecords).catch(() => setRecords([])).finally(() => setLoading(false))
+  }, [caseId])
+
+  async function save() {
+    setSaving(true)
+    try {
+      const created = await api.createEnforcement(caseId, form)
+      setRecords(prev => [...prev, created])
+      setAdding(false)
+      setForm({ fssp_number: '', bailiff_name: '', fssp_status: '', fssp_url: '', notes: '' })
+    } finally { setSaving(false) }
+  }
+
+  async function remove(id: number) {
+    await api.deleteEnforcement(caseId, id)
+    setRecords(prev => prev.filter(r => r.id !== id))
+  }
+
+  return (
+    <div className={s.card}>
+      <div className={s.cardHeaderRow}>
+        <h3 className={s.cardTitle}>Исполнительное производство</h3>
+        <button className={s.uploadBtn} onClick={() => setAdding(a => !a)}>
+          {adding ? 'Отмена' : '+ Добавить ИП'}
+        </button>
+      </div>
+
+      {adding && (
+        <div className={s.enfForm}>
+          <div className={s.enfRow}>
+            <input className={s.input} placeholder="№ производства" value={form.fssp_number} onChange={e => setForm(f => ({ ...f, fssp_number: e.target.value }))} />
+            <input className={s.input} placeholder="Пристав" value={form.bailiff_name} onChange={e => setForm(f => ({ ...f, bailiff_name: e.target.value }))} />
+          </div>
+          <input className={s.input} placeholder="Статус" value={form.fssp_status} onChange={e => setForm(f => ({ ...f, fssp_status: e.target.value }))} />
+          <input className={s.input} placeholder="Ссылка ФССП (https://...)" value={form.fssp_url} onChange={e => setForm(f => ({ ...f, fssp_url: e.target.value }))} />
+          <textarea className={s.editTextarea} placeholder="Примечания" rows={2} value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
+          <div className={s.editActions}>
+            <button className={s.saveBtn} onClick={save} disabled={saving}>{saving ? 'Сохраняю...' : 'Создать'}</button>
+          </div>
+        </div>
+      )}
+
+      {loading ? (
+        <p className={s.noAttach}>Загрузка...</p>
+      ) : records.length === 0 && !adding ? (
+        <p className={s.noAttach}>Исполнительных производств нет.</p>
+      ) : (
+        <div className={s.enfList}>
+          {records.map(r => (
+            <div key={r.id} className={s.enfItem}>
+              <div className={s.enfMain}>
+                {r.fssp_number && <span className={s.enfNumber}>№ {r.fssp_number}</span>}
+                {r.bailiff_name && <span className={s.enfMeta}>Пристав: {r.bailiff_name}</span>}
+                {r.fssp_status && <span className={s.enfMeta}>{r.fssp_status}</span>}
+                {r.notes && <span className={s.enfMeta}>{r.notes}</span>}
+              </div>
+              <div className={s.enfActions}>
+                {r.fssp_url && (
+                  <a href={r.fssp_url} target="_blank" rel="noreferrer" className={s.enfLink}>
+                    ФССП ↗
+                  </a>
+                )}
+                <button className={s.enfDel} onClick={() => remove(r.id)} title="Удалить">✕</button>
               </div>
             </div>
           ))}

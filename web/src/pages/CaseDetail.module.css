@@ -334,6 +334,20 @@
 }
 .cancelEditBtn:hover { background: var(--c-bg); }
 
+/* ── Enforcement ── */
+.enfForm { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; padding: 14px; background: var(--c-bg); border-radius: 10px; border: 1px solid var(--c-border); }
+.enfRow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.enfList { display: flex; flex-direction: column; gap: 8px; }
+.enfItem { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 12px 14px; background: var(--c-bg); border-radius: 9px; border: 1px solid var(--c-border); }
+.enfMain { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.enfNumber { font-size: 14px; font-weight: 700; color: var(--c-text); }
+.enfMeta { font-size: 13px; color: var(--c-text-2); }
+.enfActions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.enfLink { font-size: 12px; color: var(--c-gold); font-weight: 600; text-decoration: none; padding: 4px 10px; border: 1px solid var(--c-gold); border-radius: 6px; transition: background 0.15s; }
+.enfLink:hover { background: rgba(200,164,90,0.1); }
+.enfDel { background: none; border: none; color: var(--c-text-3); cursor: pointer; font-size: 14px; padding: 4px 6px; border-radius: 4px; transition: color 0.15s; }
+.enfDel:hover { color: #dc2626; }
+
 /* ── Deadlines ── */
 .deadlineList { display: flex; flex-direction: column; gap: 10px; }
 

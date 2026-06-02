@@ -57,6 +57,19 @@ export interface TokenResponse {
   token_type: string
 }
 
+export interface EnforcementRecord {
+  id: number
+  case_id: number
+  fssp_number: string | null
+  fssp_start_date: string | null
+  bailiff_name: string | null
+  fssp_status: string | null
+  fssp_url: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
 export interface CaseStage {
   id: number
   case_id: number

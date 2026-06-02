@@ -1,4 +1,4 @@
-import type { Case, Client, Attachment, TokenResponse, SyncResponse, CalendarEvent, CaseStage, CompanyLawyer } from './types'
+import type { Case, Client, Attachment, TokenResponse, SyncResponse, CalendarEvent, CaseStage, CompanyLawyer, EnforcementRecord } from './types'
 
 const BASE_URL_KEY = 'lawcrm_base_url'
 const ACCESS_TOKEN_KEY = 'lawcrm_access_token'
@@ -143,6 +143,18 @@ export const api = {
     return request<Attachment>(`/cases/${caseId}/attachments`, { method: 'POST', body: form })
   },
 
+  // Enforcement
+  enforcement: (caseId: number) => request<EnforcementRecord[]>(`/cases/${caseId}/enforcement`),
+
+  createEnforcement: (caseId: number, data: Partial<EnforcementRecord>) =>
+    request<EnforcementRecord>(`/cases/${caseId}/enforcement`, { method: 'POST', body: JSON.stringify(data) }),
+
+  updateEnforcement: (caseId: number, recordId: number, data: Partial<EnforcementRecord>) =>
+    request<EnforcementRecord>(`/cases/${caseId}/enforcement/${recordId}`, { method: 'PATCH', body: JSON.stringify(data) }),
+
+  deleteEnforcement: (caseId: number, recordId: number) =>
+    request<void>(`/cases/${caseId}/enforcement/${recordId}`, { method: 'DELETE' }),
+
   // Stages
   stages: (caseId: number) => request<CaseStage[]>(`/cases/${caseId}/stages`),
 
@@ -158,9 +170,18 @@ export const api = {
   // Lawyers
   lawyers: () => request<CompanyLawyer[]>('/lawyers'),
 
+  createLawyer: (data: Partial<CompanyLawyer>) =>
+    request<CompanyLawyer>('/lawyers', { method: 'POST', body: JSON.stringify(data) }),
+
   // Calendar
   calendar: (start: string, end: string) =>
     request<CalendarEvent[]>(`/calendar?start=${start}&end=${end}`),
+
+  // Admin
+  adminUsers: () => request<any[]>('/admin/users'),
+  adminLogs: () => request<any[]>('/admin/logs'),
+  adminUpdateUser: (id: number, data: object) => request<any>(`/admin/users/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+  adminDeleteUser: (id: number) => request<void>(`/admin/users/${id}`, { method: 'DELETE' }),
 
   // Sync
   sync: () => request<SyncResponse>('/sync'),

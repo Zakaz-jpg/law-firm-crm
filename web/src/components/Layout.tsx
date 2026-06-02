@@ -65,6 +65,14 @@ function LogOutIcon() {
   )
 }
 
+function ShieldIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+  )
+}
+
 export default function Layout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
@@ -103,6 +111,16 @@ export default function Layout() {
             <CalendarIcon />
             Календарь
           </NavLink>
+          <NavLink to="/lawyers" className={({ isActive }) => `${s.link} ${isActive ? s.active : ''}`}>
+            <UsersIcon />
+            Юристы
+          </NavLink>
+          {user?.role === 'admin' && (
+            <NavLink to="/admin" className={({ isActive }) => `${s.link} ${isActive ? s.active : ''}`}>
+              <ShieldIcon />
+              Администрирование
+            </NavLink>
+          )}
         </nav>
 
         <div className={s.footer}>

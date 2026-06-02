@@ -6,11 +6,20 @@ import type { Case } from '../api/types'
 import { STATUS_LABELS, STATUS_COLORS, CATEGORY_LABELS } from '../api/types'
 import s from './Dashboard.module.css'
 
+const STAGE_FILTERS = [
+  { value: 'all', label: 'Все' },
+  { value: 'first_instance', label: 'Первая' },
+  { value: 'appeal', label: 'Апелляция' },
+  { value: 'cassation', label: 'Кассация' },
+  { value: 'supervisory', label: 'Надзор' },
+]
+
 export default function Dashboard() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [cases, setCases] = useState<Case[]>([])
   const [loading, setLoading] = useState(true)
+  const [stageFilter, setStageFilter] = useState('all')
 
   useEffect(() => {
     api.cases({ limit: 200 } as Parameters<typeof api.cases>[0])
@@ -25,6 +34,8 @@ export default function Dashboard() {
   const lost   = cases.filter(c => c.status === 'lost').length
   const total  = cases.length
 
+  // Для фильтра по инстанции нужны стадии — используем current_stage_id как индикатор
+  // (упрощённо: фильтруем по полю court_type или stage_type в будущем)
   const upcoming = cases
     .filter(c => c.next_hearing_date && new Date(c.next_hearing_date) >= now)
     .sort((a, b) => new Date(a.next_hearing_date!).getTime() - new Date(b.next_hearing_date!).getTime())
@@ -112,7 +123,18 @@ export default function Dashboard() {
           )}
 
           <div className={s.section}>
-            <h2 className={s.sectionTitle}>Ближайшие заседания</h2>
+            <div className={s.sectionHeader}>
+              <h2 className={s.sectionTitle}>Ближайшие заседания</h2>
+              <div className={s.stageFilters}>
+                {STAGE_FILTERS.map(f => (
+                  <button
+                    key={f.value}
+                    className={`${s.stageFilter} ${stageFilter === f.value ? s.stageFilterActive : ''}`}
+                    onClick={() => setStageFilter(f.value)}
+                  >{f.label}</button>
+                ))}
+              </div>
+            </div>
             {upcoming.length === 0 ? (
               <p className={s.empty}>Нет запланированных заседаний</p>
             ) : (

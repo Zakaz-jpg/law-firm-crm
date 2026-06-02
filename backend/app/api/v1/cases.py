@@ -9,6 +9,7 @@ from app.models.case import Case, CaseEvent
 from app.models.user import User
 from app.schemas.case import CaseCreate, CaseRead, CaseStatusUpdate, CaseUpdate
 from app.services.deadlines import calculate_deadlines
+from typing import List as ListType
 
 router = APIRouter(prefix="/cases", tags=["cases"])
 
@@ -62,6 +63,29 @@ def create_case(
     db.commit()
     db.refresh(case)
     return _load_case(db, case.id, current_user.id)
+
+
+@router.get("/conflict-check")
+def conflict_check(
+    client_id: Optional[int] = None,
+    defendant_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Проверяет пересечения: один из участников уже является стороной в другом активном деле."""
+    if not client_id and not defendant_id:
+        return {"conflicts": []}
+    ids = [i for i in [client_id, defendant_id] if i]
+    conflicts = (
+        db.query(Case)
+        .filter(
+            Case.status == "active",
+            Case.lawyer_id == current_user.id,
+            (Case.client_id.in_(ids) | Case.defendant_id.in_(ids)),
+        )
+        .all()
+    )
+    return {"conflicts": [{"id": c.id, "title": c.title, "case_number": c.case_number} for c in conflicts]}
 
 
 @router.get("/{case_id}", response_model=CaseRead)
