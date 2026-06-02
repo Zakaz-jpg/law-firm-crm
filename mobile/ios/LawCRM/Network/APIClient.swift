@@ -91,6 +91,18 @@ final class APIClient {
         _ = try await performRaw(req)
     }
 
+    // MARK: - Admin
+
+    func adminUsers() async throws -> [UserDTO] {
+        return try await perform(authedRequest(path: "/admin/users"))
+    }
+
+    func adminUpdateUser(id: Int, role: String, isActive: Bool) async throws -> UserDTO {
+        var req = authedRequest(path: "/admin/users/\(id)", method: "PATCH")
+        req.httpBody = try JSONSerialization.data(withJSONObject: ["role": role, "is_active": isActive])
+        return try await perform(req)
+    }
+
     func registerDeviceToken(_ deviceToken: String, platform: String = "ios") async throws {
         var req = authedRequest(path: "/auth/device-token", method: "POST")
         req.httpBody = try encoder.encode(["token": deviceToken, "platform": platform])

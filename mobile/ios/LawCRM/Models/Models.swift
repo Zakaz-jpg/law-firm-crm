@@ -156,16 +156,17 @@ final class ClientEntity {
 
 // MARK: - User
 
-struct UserDTO: Codable {
+struct UserDTO: Codable, Identifiable {
     var id: Int
     var email: String
     var fullName: String
     var role: String?
+    var isActive: Bool?
 
     enum CodingKeys: String, CodingKey {
-        case id, email
+        case id, email, role
         case fullName = "full_name"
-        case role
+        case isActive = "is_active"
     }
 }
 

@@ -123,6 +123,19 @@ struct ProfileView: View {
                         }
                         .padding(.horizontal)
 
+                        // Администрирование (только admin)
+                        if user?.role == "admin" {
+                            NavigationLink(destination: AdminUsersView()) {
+                                Label("Управление пользователями", systemImage: "person.2.badge.gearshape")
+                                    .frame(maxWidth: .infinity)
+                                    .padding(12)
+                                    .background(Color(red: 0.1, green: 0.15, blue: 0.27))
+                                    .foregroundStyle(.white)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
+                            .padding(.horizontal)
+                        }
+
                         // Выход
                         Button("Выйти", role: .destructive) {
                             auth.logout()

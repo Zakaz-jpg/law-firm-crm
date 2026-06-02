@@ -22,6 +22,7 @@
 		AD0C2B6974CC5D080FD15C9A /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E049C4A5FA31650957596FC /* DashboardView.swift */; };
 		8A3AB18F258F2BF0673C9F05 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68CF02C7AD6E9D58AA4AB4A /* CalendarView.swift */; };
 		5A31F090668DA87E02BA521C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B84554A4C58F11B6F41B3D /* ProfileView.swift */; };
+		D7BF0BFCF3868CB6BD04A095 /* AdminUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EF02D77EA2A30AA67BEF4E /* AdminUsersView.swift */; };
 		ACCF8EEAC867F8AE57BCBC1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 249AA357BA35D046B7611EA3 /* Assets.xcassets */; };
 		2BCEC85EC3FF310CAE678EA7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A1DD2B28C6217A4F4C193FF /* Info.plist */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		8E049C4A5FA31650957596FC /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		C68CF02C7AD6E9D58AA4AB4A /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		78B84554A4C58F11B6F41B3D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		F7EF02D77EA2A30AA67BEF4E /* AdminUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminUsersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				EFC4C09D78D162BF3C450CA1,
 				D96EFD42D972D6650D028A7B,
 				773035B419DA4F3C9877A89B,
+				B16ECC4C335D81D9CBD60246,
 			);
 			name = Views;
 			path = Views;
@@ -187,6 +190,15 @@
 			);
 			name = Profile;
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		B16ECC4C335D81D9CBD60246 /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				F7EF02D77EA2A30AA67BEF4E,
+			);
+			name = Admin;
+			path = Admin;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,6 +276,7 @@
 				AD0C2B6974CC5D080FD15C9A /* DashboardView.swift in Sources */,
 				8A3AB18F258F2BF0673C9F05 /* CalendarView.swift in Sources */,
 				5A31F090668DA87E02BA521C /* ProfileView.swift in Sources */,
+				D7BF0BFCF3868CB6BD04A095 /* AdminUsersView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

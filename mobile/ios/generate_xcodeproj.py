@@ -30,6 +30,7 @@ SWIFT_FILES = [
     ("Views/Dashboard/DashboardView.swift",      "LawCRM/Views/Dashboard"),
     ("Views/Calendar/CalendarView.swift",        "LawCRM/Views/Calendar"),
     ("Views/Profile/ProfileView.swift",          "LawCRM/Views/Profile"),
+    ("Views/Admin/AdminUsersView.swift",         "LawCRM/Views/Admin"),
 ]
 
 # ── UUIDs ─────────────────────────────────────────────────────────────────────
@@ -64,6 +65,7 @@ GROUPS = {
     "LawCRM/Views/Dashboard": uid("group_views_dashboard"),
     "LawCRM/Views/Calendar":  uid("group_views_calendar"),
     "LawCRM/Views/Profile":   uid("group_views_profile"),
+    "LawCRM/Views/Admin":     uid("group_views_admin"),
 }
 
 FILE_REF = {rel: uid("ref_" + rel) for rel, _ in SWIFT_FILES}
