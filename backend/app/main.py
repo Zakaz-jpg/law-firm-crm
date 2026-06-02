@@ -29,11 +29,13 @@ def create_tables():
 
 
 def _run_migrations():
+    """Каждая миграция — отдельная транзакция, чтобы ошибка одной не блокировала остальные."""
+    import logging
     from sqlalchemy import text
+    log = logging.getLogger(__name__)
+
     migrations = [
-        # users
         "ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(50) DEFAULT 'lawyer'",
-        # cases — новые поля
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS court_type VARCHAR(50)",
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS external_case_url VARCHAR(255)",
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS amount NUMERIC(12,2)",
@@ -50,13 +52,12 @@ def _run_migrations():
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS lead_lawyer_id INTEGER REFERENCES company_lawyers(id)",
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS current_stage_id INTEGER REFERENCES case_stages(id)",
     ]
-    with engine.connect() as conn:
-        for sql in migrations:
-            try:
+    for sql in migrations:
+        try:
+            with engine.begin() as conn:   # begin() = автоматический commit/rollback
                 conn.execute(text(sql))
-            except Exception:
-                pass  # колонка уже существует или таблица ещё не создана
-        conn.commit()
+        except Exception as e:
+            log.debug(f"Migration skipped ({e}): {sql[:60]}")
 
 
 @app.on_event("shutdown")
