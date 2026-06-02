@@ -53,6 +53,8 @@ class Case(Base):
     stages: Mapped[List["CaseStage"]] = relationship("CaseStage", back_populates="case",
                                                       foreign_keys="CaseStage.case_id",
                                                       order_by="CaseStage.created_at")
+    enforcement_records: Mapped[List["Enforcement"]] = relationship("Enforcement", back_populates="case",
+                                                                     cascade="all, delete-orphan")
 
 
 class CaseEvent(Base):
