@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Layout from './components/Layout'
 import Login from './pages/Login'
+import Landing from './pages/Landing'
 import Cases from './pages/Cases'
 import CaseDetail from './pages/CaseDetail'
 import Clients from './pages/Clients'
@@ -19,17 +20,18 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 function PublicRoute({ children }: { children: React.ReactNode }) {
   const { isLoggedIn } = useAuth()
-  return isLoggedIn ? <Navigate to="/" replace /> : <>{children}</>
+  return isLoggedIn ? <Navigate to="/dashboard" replace /> : <>{children}</>
 }
 
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter basename="/law-firm-crm">
+      <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route element={<PrivateRoute><Layout /></PrivateRoute>}>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/cases" element={<Cases />} />
             <Route path="/cases/:id" element={<CaseDetail />} />
             <Route path="/clients" element={<Clients />} />

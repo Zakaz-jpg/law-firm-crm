@@ -95,7 +95,7 @@ export default function Layout() {
         </div>
 
         <nav className={s.nav}>
-          <NavLink to="/" end className={({ isActive }) => `${s.link} ${isActive ? s.active : ''}`}>
+          <NavLink to="/dashboard" className={({ isActive }) => `${s.link} ${isActive ? s.active : ''}`}>
             <HomeIcon />
             Дашборд
           </NavLink>
