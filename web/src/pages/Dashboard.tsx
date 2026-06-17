@@ -208,14 +208,14 @@ function CaseRow({ c, onClick, overdue }: { c: Case; onClick: () => void; overdu
         <span className={s.caseRowTitle}>{c.title}</span>
         <div className={s.caseRowMeta}>
           {c.case_number && <span>№ {c.case_number}</span>}
-          {c.client && <span>👤 {c.client.full_name}</span>}
+          {c.client && <span>{c.client.full_name}</span>}
           {c.category && <span>{CATEGORY_LABELS[c.category]}</span>}
         </div>
       </div>
       <div className={s.caseRowRight}>
         {c.next_hearing_date && (
           <span className={`${s.hearingDate} ${overdue ? s.overdue : ''}`}>
-            📅 {new Date(c.next_hearing_date).toLocaleDateString('ru', { day: 'numeric', month: 'short' })}
+            {new Date(c.next_hearing_date).toLocaleDateString('ru', { day: 'numeric', month: 'short' })}
           </span>
         )}
         <span
