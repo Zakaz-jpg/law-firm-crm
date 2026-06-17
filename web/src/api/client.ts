@@ -116,7 +116,7 @@ export const api = {
 
   getCase: (id: number) => request<Case>(`/cases/${id}`),
 
-  createCase: (data: { title: string; case_number?: string; category?: string; client_id?: number }) =>
+  createCase: (data: { title: string; case_number?: string; category?: string; client_id?: number; defendant_id?: number }) =>
     request<Case>('/cases', { method: 'POST', body: JSON.stringify(data) }),
 
   updateStatus: (id: number, status: string) =>
@@ -133,8 +133,11 @@ export const api = {
 
   getClient: (id: number) => request<Client>(`/clients/${id}`),
 
-  createClient: (data: { full_name: string; phone?: string; email?: string; inn?: string }) =>
+  createClient: (data: { full_name: string; phone?: string; email?: string; inn?: string; address?: string; notes?: string }) =>
     request<Client>('/clients', { method: 'POST', body: JSON.stringify(data) }),
+
+  updateClient: (id: number, data: Partial<{ full_name: string; phone: string; email: string; inn: string; address: string; notes: string }>) =>
+    request<Client>(`/clients/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
 
   // Attachments
   uploadAttachment: (caseId: number, file: File) => {

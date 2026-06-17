@@ -28,7 +28,7 @@ export default function Clients() {
 
       <input
         className={s.search}
-        placeholder="🔍 Поиск по имени..."
+        placeholder="🔍 Поиск по имени, телефону или ИНН..."
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
@@ -65,6 +65,8 @@ function CreateClientModal({ onClose, onCreated }: { onClose: () => void; onCrea
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [inn, setInn] = useState('')
+  const [address, setAddress] = useState('')
+  const [notes, setNotes] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -72,7 +74,7 @@ function CreateClientModal({ onClose, onCreated }: { onClose: () => void; onCrea
     e.preventDefault()
     setLoading(true)
     try {
-      await api.createClient({ full_name: fullName, phone: phone || undefined, email: email || undefined, inn: inn || undefined })
+      await api.createClient({ full_name: fullName, phone: phone || undefined, email: email || undefined, inn: inn || undefined, address: address || undefined, notes: notes || undefined })
       onCreated()
       onClose()
     } catch (err) {
@@ -91,6 +93,8 @@ function CreateClientModal({ onClose, onCreated }: { onClose: () => void; onCrea
           <input className={s.input} placeholder="Телефон" value={phone} onChange={e => setPhone(e.target.value)} />
           <input className={s.input} type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
           <input className={s.input} placeholder="ИНН" value={inn} onChange={e => setInn(e.target.value)} />
+          <input className={s.input} placeholder="Адрес" value={address} onChange={e => setAddress(e.target.value)} />
+          <textarea className={s.input} placeholder="Примечания" value={notes} onChange={e => setNotes(e.target.value)} rows={3} style={{ resize: 'vertical' }} />
           {error && <div className={s.error}>{error}</div>}
           <div className={s.btns}>
             <button type="button" className={s.cancelBtn} onClick={onClose}>Отмена</button>

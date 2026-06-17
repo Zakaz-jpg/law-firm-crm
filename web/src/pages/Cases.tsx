@@ -5,7 +5,7 @@ import type { Case, Client } from '../api/types'
 import { STATUS_LABELS, STATUS_COLORS, CATEGORY_LABELS } from '../api/types'
 import s from './Cases.module.css'
 
-const STATUSES = ['', 'active', 'suspended', 'closed', 'won', 'lost']
+const STATUSES = ['', 'active', 'suspended', 'closed', 'won', 'lost', 'appeal_filed', 'cassation_filed', 'deadline_missed']
 
 export default function Cases() {
   const navigate = useNavigate()
@@ -88,6 +88,7 @@ function CreateCaseModal({ onClose, onCreated }: { onClose: () => void; onCreate
   const [caseNumber, setCaseNumber] = useState('')
   const [category, setCategory] = useState('')
   const [clientId, setClientId] = useState('')
+  const [defendantId, setDefendantId] = useState('')
   const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -105,6 +106,7 @@ function CreateCaseModal({ onClose, onCreated }: { onClose: () => void; onCreate
         case_number: caseNumber || undefined,
         category: category || undefined,
         client_id: clientId ? Number(clientId) : undefined,
+        defendant_id: defendantId ? Number(defendantId) : undefined,
       })
       onCreated()
       onClose()
@@ -127,7 +129,11 @@ function CreateCaseModal({ onClose, onCreated }: { onClose: () => void; onCreate
             {Object.entries(CATEGORY_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
           <select className={s.input} value={clientId} onChange={e => setClientId(e.target.value)}>
-            <option value="">Клиент (необязательно)</option>
+            <option value="">Истец (необязательно)</option>
+            {clients.map(c => <option key={c.id} value={c.id}>{c.full_name}</option>)}
+          </select>
+          <select className={s.input} value={defendantId} onChange={e => setDefendantId(e.target.value)}>
+            <option value="">Ответчик (необязательно)</option>
             {clients.map(c => <option key={c.id} value={c.id}>{c.full_name}</option>)}
           </select>
           {error && <div className={s.error}>{error}</div>}

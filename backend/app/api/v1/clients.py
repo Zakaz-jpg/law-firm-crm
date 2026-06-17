@@ -23,7 +23,11 @@ def list_clients(
 ):
     query = db.query(Client)
     if q:
-        query = query.filter(Client.full_name.ilike(f"%{q}%"))
+        query = query.filter(
+            Client.full_name.ilike(f"%{q}%") |
+            Client.phone.ilike(f"%{q}%") |
+            Client.inn.ilike(f"%{q}%")
+        )
     return query.offset(skip).limit(limit).all()
 
 

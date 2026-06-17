@@ -137,6 +137,8 @@ export const STATUS_LABELS: Record<string, string> = {
   closed: 'Закрыто',
   won: 'Выиграно',
   lost: 'Проиграно',
+  appeal_filed: 'Апелляция подана',
+  cassation_filed: 'Кассация подана',
   deadline_missed: 'Срок пропущен',
 }
 
@@ -154,5 +156,7 @@ export const STATUS_COLORS: Record<string, string> = {
   closed: '#6b7280',
   won: '#2563eb',
   lost: '#dc2626',
+  appeal_filed: '#7c3aed',
+  cassation_filed: '#9333ea',
   deadline_missed: '#dc2626',
 }

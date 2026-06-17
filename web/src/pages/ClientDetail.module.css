@@ -180,3 +180,99 @@
   font-size: 13px;
   color: var(--c-text-2);
 }
+
+/* ── Edit button ── */
+.editBtn {
+  margin-top: 12px;
+  background: none;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-text-2);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.editBtn:hover { border-color: var(--c-gold); color: var(--c-gold); }
+
+/* ── Edit modal ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: var(--c-surface);
+  border-radius: 16px;
+  padding: 28px 32px;
+  border: 1px solid var(--c-border);
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+}
+
+.modalTitle {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 20px;
+  letter-spacing: -0.01em;
+}
+
+.form { display: flex; flex-direction: column; gap: 10px; }
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--c-text);
+  font-family: inherit;
+  transition: border-color 0.15s;
+  outline: none;
+}
+.input:focus { border-color: var(--c-gold); }
+
+.btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px; }
+
+.cancelBtn {
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--c-border);
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-text-2);
+  cursor: pointer;
+}
+.cancelBtn:hover { border-color: var(--c-gold); color: var(--c-gold); }
+
+.submitBtn {
+  padding: 9px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--c-navy);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.submitBtn:hover:not(:disabled) { opacity: 0.85; }
+.submitBtn:disabled { opacity: 0.5; cursor: default; }
+
+.error {
+  color: #dc2626;
+  font-size: 13px;
+  padding: 6px 0;
+}

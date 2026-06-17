@@ -11,6 +11,7 @@ export default function ClientDetail() {
   const [client, setClient] = useState<Client | null>(null)
   const [cases, setCases] = useState<Case[]>([])
   const [loading, setLoading] = useState(true)
+  const [editing, setEditing] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -49,6 +50,7 @@ export default function ClientDetail() {
             {client.address && <span className={s.contact}>📍 {client.address}</span>}
           </div>
           {client.notes && <p className={s.notes}>{client.notes}</p>}
+          <button className={s.editBtn} onClick={() => setEditing(true)}>Редактировать</button>
         </div>
         <div className={s.stats}>
           <div className={s.stat}>
@@ -65,6 +67,14 @@ export default function ClientDetail() {
           </div>
         </div>
       </div>
+
+      {editing && (
+        <EditClientModal
+          client={client}
+          onClose={() => setEditing(false)}
+          onSaved={updated => { setClient(updated); setEditing(false) }}
+        />
+      )}
 
       <h2 className={s.sectionTitle}>История дел</h2>
 
@@ -96,6 +106,60 @@ export default function ClientDetail() {
           ))}
         </div>
       )}
+    </div>
+  )
+}
+
+function EditClientModal({ client, onClose, onSaved }: { client: Client; onClose: () => void; onSaved: (c: Client) => void }) {
+  const [fullName, setFullName] = useState(client.full_name)
+  const [phone, setPhone] = useState(client.phone ?? '')
+  const [email, setEmail] = useState(client.email ?? '')
+  const [inn, setInn] = useState(client.inn ?? '')
+  const [address, setAddress] = useState(client.address ?? '')
+  const [notes, setNotes] = useState(client.notes ?? '')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault()
+    setSaving(true); setError('')
+    try {
+      const updated = await api.updateClient(client.id, {
+        full_name: fullName,
+        phone: phone || undefined,
+        email: email || undefined,
+        inn: inn || undefined,
+        address: address || undefined,
+        notes: notes || undefined,
+      })
+      onSaved(updated)
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <div className={s.overlay} onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className={s.modal}>
+        <h2 className={s.modalTitle}>Редактировать клиента</h2>
+        <form onSubmit={submit} className={s.form}>
+          <input className={s.input} placeholder="ФИО или название *" value={fullName} onChange={e => setFullName(e.target.value)} required />
+          <input className={s.input} placeholder="Телефон" value={phone} onChange={e => setPhone(e.target.value)} />
+          <input className={s.input} type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+          <input className={s.input} placeholder="ИНН" value={inn} onChange={e => setInn(e.target.value)} />
+          <input className={s.input} placeholder="Адрес" value={address} onChange={e => setAddress(e.target.value)} />
+          <textarea className={s.input} placeholder="Примечания" value={notes} onChange={e => setNotes(e.target.value)} rows={3} style={{ resize: 'vertical' }} />
+          {error && <div className={s.error}>{error}</div>}
+          <div className={s.btns}>
+            <button type="button" className={s.cancelBtn} onClick={onClose}>Отмена</button>
+            <button type="submit" className={s.submitBtn} disabled={saving || !fullName}>
+              {saving ? 'Сохранение...' : 'Сохранить'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
