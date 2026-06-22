@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1 import auth, cases, clients, attachments, sync, calendar, stages, lawyers, enforcement, admin
+from app.api.v1 import auth, cases, clients, attachments, sync, calendar, stages, lawyers, enforcement, admin, version
 
 router = APIRouter(prefix="/api/v1")
 router.include_router(auth.router)
@@ -12,3 +12,4 @@ router.include_router(calendar.router)
 router.include_router(lawyers.router)
 router.include_router(enforcement.router)
 router.include_router(admin.router)
+router.include_router(version.router)

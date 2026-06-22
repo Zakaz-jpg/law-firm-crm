@@ -1,6 +1,7 @@
 import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import s from './Layout.module.css'
+import { useEffect, useState } from 'react'
 
 function ScalesIcon() {
   return (
@@ -76,6 +77,14 @@ function ShieldIcon() {
 export default function Layout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const [appVersion, setAppVersion] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/v1/version')
+      .then(r => r.json())
+      .then(d => setAppVersion(`v${d.version} (${d.commit})`))
+      .catch(() => {})
+  }, [])
 
   function handleLogout() {
     logout()
@@ -135,6 +144,7 @@ export default function Layout() {
             <LogOutIcon />
             Выйти
           </button>
+          {appVersion && <div className={s.version}>{appVersion}</div>}
         </div>
       </aside>
 

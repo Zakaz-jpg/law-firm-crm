@@ -166,6 +166,14 @@
   background: rgba(239, 68, 68, 0.06);
 }
 
+.version {
+  font-size: 10px;
+  color: #3a4f63;
+  text-align: center;
+  padding: 6px 0 2px;
+  letter-spacing: 0.3px;
+}
+
 /* ── Main ── */
 .main {
   flex: 1;
