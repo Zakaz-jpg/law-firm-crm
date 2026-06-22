@@ -1,461 +1,416 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>LawCRM — CRM для юридических компаний</title>
-<meta name="description" content="Профессиональная CRM для управления юридической практикой. Дела, клиенты, команда."/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0B0B0D;
-  --bg2:#0F0F11;
-  --bg3:#121214;
-  --text:#E4E0D8;
-  --cream:#C2B09A;
-  --muted:#585450;
-  --line:rgba(194,176,154,.09);
-  --bd:rgba(194,176,154,.14);
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>LawCRM | Личный кабинет для юристов</title>
+  <meta name="description" content="LawCRM — профессиональный личный кабинет для юристов. Управление делами, документами, клиентами и сроками в единой экосистеме. Безопасно, удобно, законно.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-#c3d{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-#prog{position:fixed;top:0;left:0;height:1px;width:0%;z-index:9998;background:var(--cream);pointer-events:none}
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F9FAFE;
+      color: #0A1C2F;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
 
-/* CURSOR */
-#cur{position:fixed;pointer-events:none;z-index:9999}
-#cdot{width:5px;height:5px;background:var(--cream);border-radius:50%;position:absolute;top:-2.5px;left:-2.5px;transition:opacity .15s}
-#cring{width:28px;height:28px;border:1px solid rgba(194,176,154,.3);border-radius:50%;position:absolute;top:-14px;left:-14px;transition:all .35s cubic-bezier(.4,0,.2,1)}
-body.hov #cring{width:46px;height:46px;top:-23px;left:-23px;border-color:var(--cream)}
-body.hov #cdot{opacity:0}
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:30px 64px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
-nav.solid{background:rgba(11,11,13,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);padding:18px 64px}
-.logo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);text-decoration:none;letter-spacing:.03em}
-.logo em{color:var(--cream);font-style:normal}
-.navr{display:flex;align-items:center;gap:40px}
-.navl{list-style:none;display:flex;gap:32px}
-.navl a{text-decoration:none;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase;transition:color .2s}
-.navl a:hover{color:var(--text)}
-.btn-nav{padding:10px 24px;border:1px solid var(--bd);border-radius:2px;background:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:none;transition:all .22s}
-.btn-nav:hover{background:var(--cream);color:var(--bg);border-color:var(--cream)}
+    .header {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+    }
 
-/* HERO */
-#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:140px 64px 100px;z-index:1}
-.hero-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream);margin-bottom:44px;display:flex;align-items:center;gap:14px}
-.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--cream)}
-.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(54px,7.5vw,104px);line-height:.98;font-weight:400;color:var(--text);max-width:840px;margin-bottom:44px;letter-spacing:-.01em}
-.hero-title em{font-style:italic;color:var(--cream)}
-.hero-sub{font-size:15px;line-height:1.7;color:var(--muted);max-width:400px;margin-bottom:60px;font-weight:300}
-.hero-actions{display:flex;align-items:center;gap:36px}
-.btn-primary{padding:14px 40px;background:var(--cream);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;text-decoration:none;border-radius:2px;cursor:none;transition:opacity .2s;display:inline-block}
-.btn-primary:hover{opacity:.85}
-.btn-link{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:none;transition:color .2s;display:flex;align-items:center;gap:8px}
-.btn-link::after{content:'↓'}
-.btn-link:hover{color:var(--text)}
-.hero-foot{position:absolute;bottom:52px;left:64px;display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-.hero-foot::before{content:'';width:24px;height:1px;background:var(--muted);animation:si 2.2s ease-in-out infinite}
-@keyframes si{0%,100%{width:24px;opacity:.4}50%{width:44px;opacity:1}}
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+    }
 
-/* METRICS */
-#metrics{position:relative;z-index:1;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr)}
-.mc{padding:52px 64px;border-right:1px solid var(--line)}
-.mc:last-child{border-right:none}
-.mn{font-family:'DM Serif Display',serif;font-size:clamp(40px,4.5vw,62px);color:var(--text);line-height:1;margin-bottom:10px}
-.ml{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #0F2B4D 0%, #1E4A76 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .logo span { background: none; color: #1E4A76; font-weight: 700; }
+    .logo i { background: none; color: #2563EB; font-size: 1.6rem; margin-right: 4px; }
 
-/* FEATURES */
-#features{position:relative;z-index:1;padding:120px 64px}
-.sect-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);margin-bottom:72px;display:flex;align-items:center;gap:14px}
-.sect-label::before{content:'';width:24px;height:1px;background:var(--cream)}
-.feat-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:80px;align-items:end}
-.feat-title{font-family:'DM Serif Display',serif;font-size:clamp(34px,4vw,52px);line-height:1.08;font-weight:400;color:var(--text)}
-.feat-title em{font-style:italic;color:var(--cream)}
-.feat-desc{font-size:14px;line-height:1.75;color:var(--muted);max-width:360px}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
-.fc{padding:52px 40px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .2s;cursor:none}
-.fc:nth-child(3n){border-right:none}
-.fc:nth-child(n+4){border-bottom:none}
-.fc:hover{background:var(--bg2)}
-.fc-num{font-family:'DM Serif Display',serif;font-size:11px;letter-spacing:.12em;color:var(--muted);margin-bottom:44px}
-.fc-icon{width:32px;height:32px;margin-bottom:20px;color:var(--cream)}
-.fc-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:var(--text);margin-bottom:10px;line-height:1.15}
-.fc-desc{font-size:12px;line-height:1.7;color:var(--muted)}
+    .nav-links { display: flex; gap: 2rem; align-items: center; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      color: #1E2F47;
+      transition: color 0.2s;
+      font-size: 1rem;
+    }
+    .nav-links a:hover { color: #2563EB; }
+    .nav-links .btn-outline-small {
+      background: transparent;
+      border: 1.5px solid #2563EB;
+      padding: 8px 18px;
+      border-radius: 32px;
+      color: #2563EB;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .nav-links .btn-outline-small:hover { background: #2563EB; color: white; }
 
-/* HOW */
-#how{position:relative;z-index:1;padding:120px 64px;border-top:1px solid var(--line);background:var(--bg2)}
-.how-grid{display:grid;grid-template-columns:360px 1fr;gap:100px;align-items:start}
-.how-sticky{position:sticky;top:120px}
-.how-title{font-family:'DM Serif Display',serif;font-size:clamp(34px,3.5vw,48px);line-height:1.08;font-weight:400;color:var(--text);margin-bottom:20px}
-.how-sub{font-size:13px;line-height:1.75;color:var(--muted)}
-.how-steps{display:flex;flex-direction:column}
-.hs{display:grid;grid-template-columns:56px 1fr;gap:36px;padding:52px 0;border-bottom:1px solid var(--line);align-items:start}
-.hs:first-child{border-top:1px solid var(--line)}
-.hs-num{font-family:'DM Serif Display',serif;font-size:12px;letter-spacing:.1em;color:var(--cream);padding-top:4px}
-.hs-title{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:10px}
-.hs-desc{font-size:13px;line-height:1.75;color:var(--muted)}
+    .menu-icon { display: none; font-size: 1.8rem; cursor: pointer; color: #0F2B4D; }
 
-/* QUOTE */
-#quote{position:relative;z-index:1;padding:120px 64px;border-top:1px solid var(--line)}
-.quote-inner{max-width:680px;margin:0 auto;text-align:center}
-.quote-mark{font-family:'DM Serif Display',serif;font-size:72px;color:var(--cream);opacity:.18;line-height:.5;display:block;margin-bottom:36px}
-.quote-text{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.8vw,32px);line-height:1.45;font-weight:400;font-style:italic;color:var(--text);margin-bottom:28px}
-.quote-attr{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+    @media (max-width: 768px) {
+      .menu-icon { display: block; }
+      .nav-links {
+        position: fixed; top: 75px; left: -100%;
+        background: white; flex-direction: column; width: 80%;
+        height: calc(100vh - 75px);
+        box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+        gap: 1.5rem; padding: 2rem 1.5rem;
+        transition: left 0.3s ease; align-items: flex-start; z-index: 99;
+      }
+      .nav-links.active { left: 0; }
+      .nav-links a { width: 100%; }
+    }
 
-/* CTA */
-#cta{position:relative;z-index:1;padding:140px 64px;border-top:1px solid var(--line);text-align:center}
-.cta-title{font-family:'DM Serif Display',serif;font-size:clamp(40px,6vw,80px);line-height:1.02;font-weight:400;color:var(--text);margin-bottom:24px}
-.cta-title em{font-style:italic;color:var(--cream)}
-.cta-sub{font-size:14px;color:var(--muted);margin-bottom:56px}
-.btn-cta{display:inline-block;padding:18px 60px;background:var(--text);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;text-decoration:none;border-radius:2px;cursor:none;transition:opacity .2s}
-.btn-cta:hover{opacity:.88}
+    .btn-primary {
+      background: #2563EB; color: white; border: none;
+      padding: 12px 28px; border-radius: 40px;
+      font-weight: 600; font-size: 1rem; cursor: pointer;
+      transition: all 0.2s; box-shadow: 0 2px 6px rgba(37,99,235,0.2);
+      display: inline-block; text-decoration: none;
+    }
+    .btn-primary:hover { background: #1D4ED8; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,0.3); }
 
-/* FOOTER */
-footer{position:relative;z-index:1;padding:44px 64px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
-.flogo{font-family:'DM Serif Display',serif;font-size:16px;color:var(--muted)}
-.flinks{display:flex;gap:32px}
-.flinks a{font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:.06em;transition:color .2s}
-.flinks a:hover{color:var(--text)}
-.fcopy{font-size:10px;color:var(--muted);letter-spacing:.06em}
+    .btn-secondary {
+      background: white; border: 1.5px solid #CBD5E1; color: #1E2F47;
+      padding: 12px 28px; border-radius: 40px;
+      font-weight: 500; cursor: pointer; transition: 0.2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-secondary:hover { border-color: #2563EB; background: #F8FAFF; }
 
-/* REVEAL */
-.fx{opacity:0;transform:translateY(18px);transition:opacity .75s cubic-bezier(.4,0,.2,1),transform .75s cubic-bezier(.4,0,.2,1)}
-.fx.in{opacity:1;transform:none}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+    .hero { padding: 80px 0 64px; background: linear-gradient(145deg, #F9FAFE 0%, #F0F4FA 100%); }
+    .hero-grid { display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
+    .hero-content { flex: 1; min-width: 300px; }
+    .hero-badge {
+      background: #E6EEFC; color: #1E4A76; font-weight: 600; font-size: 0.85rem;
+      padding: 6px 14px; border-radius: 30px; display: inline-block; margin-bottom: 24px;
+    }
+    .hero-content h1 {
+      font-size: 3.3rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.02em;
+      background: linear-gradient(to right, #0F2B4D, #1E4A76);
+      background-clip: text; -webkit-background-clip: text; color: transparent;
+      margin-bottom: 24px;
+    }
+    .hero-content p { font-size: 1.2rem; color: #2C3E5A; max-width: 550px; margin-bottom: 32px; }
+    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-image {
+      flex: 1; min-width: 280px;
+      background: #E9EFF8; border-radius: 40px; padding: 20px;
+      box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15);
+    }
+    .mockup-dashboard { background: white; border-radius: 24px; padding: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+    .mockup-stats { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .stat-card { background: #F1F5F9; border-radius: 20px; padding: 12px; flex: 1; font-weight: 600; font-size: 0.9rem; }
 
-@media(max-width:960px){
-  nav{padding:20px 24px}
-  nav.solid{padding:14px 24px}
-  #hero{padding:120px 24px 100px}
-  .hero-foot{left:24px}
-  #metrics{grid-template-columns:repeat(2,1fr)}
-  .mc{padding:36px 24px}
-  #features,#how,#quote,#cta{padding:80px 24px}
-  .feat-header,.how-grid{grid-template-columns:1fr}
-  .how-sticky{position:static}
-  .feat-grid{grid-template-columns:1fr 1fr}
-  footer{flex-direction:column;gap:20px;text-align:center;padding:36px 24px}
-}
-@media(max-width:600px){
-  .feat-grid{grid-template-columns:1fr}
-  .fc:nth-child(3n){border-right:none}
-  .navl{display:none}
-}
-</style>
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.3rem; }
+      .hero-grid { flex-direction: column; }
+    }
+
+    section { padding: 80px 0; }
+    .section-title { font-size: 2.2rem; font-weight: 700; text-align: center; margin-bottom: 16px; color: #0A1C2F; }
+    .section-sub { text-align: center; max-width: 680px; margin: 0 auto 48px; color: #4B5E77; font-size: 1.1rem; }
+
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
+    .feature-card {
+      background: white; border-radius: 32px; padding: 32px 24px; transition: all 0.25s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02); border: 1px solid #EFF3F8;
+    }
+    .feature-card:hover { transform: translateY(-6px); border-color: #D9E6FF; box-shadow: 0 20px 30px -12px rgba(37,99,235,0.12); }
+    .feature-icon { font-size: 2.5rem; color: #2563EB; margin-bottom: 20px; }
+    .feature-card h3 { font-size: 1.4rem; margin-bottom: 12px; font-weight: 700; }
+    .feature-card p { color: #4B5E77; }
+
+    .why-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
+    .why-item { text-align: center; flex: 1; min-width: 200px; background: white; padding: 32px 20px; border-radius: 32px; }
+    .why-icon { font-size: 2.8rem; color: #2563EB; margin-bottom: 16px; }
+
+    .steps { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; }
+    .step {
+      background: white; border-radius: 40px; padding: 28px; flex: 1; min-width: 220px;
+      text-align: center; box-shadow: 0 6px 14px rgba(0,0,0,0.02); border: 1px solid #ECF3FA;
+    }
+    .step-number {
+      width: 50px; height: 50px; background: rgba(37,99,235,0.06); color: #2563EB;
+      font-weight: 800; font-size: 1.5rem; display: flex; align-items: center;
+      justify-content: center; border-radius: 60px; margin: 0 auto 20px;
+    }
+
+    .dashboard-preview { background: #F2F6FD; border-radius: 48px; }
+    .preview-card { background: white; border-radius: 40px; padding: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); }
+    .dashboard-widgets { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 24px; }
+    .widget { background: #F8FBFE; border-radius: 28px; padding: 20px; border-left: 4px solid #2563EB; }
+    .widget i { font-size: 1.6rem; color: #2563EB; margin-bottom: 12px; display: block; }
+
+    .pricing-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+    .pricing-card {
+      background: white; border-radius: 40px; padding: 32px; flex: 1; min-width: 260px;
+      transition: 0.2s; border: 1px solid #E9EEF4; box-shadow: 0 8px 18px rgba(0,0,0,0.02);
+    }
+    .pricing-card.popular { border: 2px solid #2563EB; position: relative; }
+    .popular-badge {
+      background: #2563EB; color: white; border-radius: 60px; padding: 4px 16px;
+      font-size: 0.8rem; font-weight: 600; position: absolute; top: -14px; left: 20px;
+    }
+    .price { font-size: 2.5rem; font-weight: 800; margin: 20px 0 12px; }
+    .price small { font-size: 1rem; font-weight: 400; }
+
+    .contact-wrapper-single {
+      max-width: 680px; margin: 0 auto; background: white;
+      border-radius: 48px; padding: 48px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.05);
+    }
+    .form-group { margin-bottom: 20px; }
+    input, textarea {
+      width: 100%; padding: 14px 18px; border-radius: 28px;
+      border: 1px solid #DFE7EF; font-family: 'Inter', sans-serif;
+      transition: 0.2s; font-size: 1rem;
+    }
+    input:focus, textarea:focus { outline: none; border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
+    .footer { background: #0A1C2F; color: #CDDFF2; padding: 48px 0 32px; margin-top: 40px; }
+    .footer a { color: #B9D0F0; text-decoration: none; }
+    .footer-bottom { text-align: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid #1E3858; }
+
+    @media (max-width: 680px) {
+      .container { padding: 0 20px; }
+      .contact-wrapper-single { padding: 28px; }
+      section { padding: 60px 0; }
+    }
+  </style>
 </head>
 <body>
-<div id="prog"></div>
-<canvas id="c3d"></canvas>
-<div id="cur"><div id="cdot"></div><div id="cring"></div></div>
-
-<nav id="nav">
-  <a href="/" class="logo">Law<em>CRM</em></a>
-  <div class="navr">
-    <ul class="navl">
-      <li><a href="#features">Возможности</a></li>
-      <li><a href="#how">Как работает</a></li>
-    </ul>
-    <a href="/login" class="btn-nav">Войти в ЛК</a>
-  </div>
-</nav>
-
-<section id="hero">
-  <p class="hero-eyebrow">Система управления юридической практикой</p>
-  <h1 class="hero-title fx">
-    Порядок<br>
-    <em>в делах</em><br>
-    начинается здесь
-  </h1>
-  <p class="hero-sub fx d1">Единая CRM для юридических компаний — дела, клиенты, команда и документы в одном месте.</p>
-  <div class="hero-actions fx d2">
-    <a href="/login" class="btn-primary">Войти в личный кабинет</a>
-    <a href="#features" class="btn-link">Возможности</a>
-  </div>
-  <div class="hero-foot">Скролл</div>
-</section>
-
-<section id="metrics">
-  <div class="mc">
-    <div class="mn"><span class="sn" data-t="500" data-s="+">500+</span></div>
-    <div class="ml">Дел в системе</div>
-  </div>
-  <div class="mc">
-    <div class="mn">3</div>
-    <div class="ml">Уровня доступа</div>
-  </div>
-  <div class="mc">
-    <div class="mn">24/7</div>
-    <div class="ml">Доступность</div>
-  </div>
-  <div class="mc">
-    <div class="mn"><span class="sn" data-t="100" data-s="%">100%</span></div>
-    <div class="ml">Защищённость</div>
-  </div>
-</section>
-
-<section id="features">
-  <p class="sect-label">Возможности</p>
-  <div class="feat-header">
-    <h2 class="feat-title fx">Инструменты,<br>которые меняют<br><em>качество работы</em></h2>
-    <p class="feat-desc fx d1">Каждый модуль спроектирован для реального рабочего процесса юридической компании — без лишнего, только то, что нужно.</p>
-  </div>
-  <div class="feat-grid">
-    <div class="fc fx">
-      <div class="fc-num">01</div>
-      <svg class="fc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>
-      <h3 class="fc-title">Управление делами</h3>
-      <p class="fc-desc">Полный жизненный цикл: статусы, исполнители, документы, история событий в единой карточке.</p>
-    </div>
-    <div class="fc fx d1">
-      <div class="fc-num">02</div>
-      <svg class="fc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <h3 class="fc-title">Клиентская база</h3>
-      <p class="fc-desc">Контакты, ИНН, история обращений, связанные дела. Мгновенный поиск по любому параметру.</p>
-    </div>
-    <div class="fc fx d2">
-      <div class="fc-num">03</div>
-      <svg class="fc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <h3 class="fc-title">Календарь событий</h3>
-      <p class="fc-desc">Заседания, дедлайны, встречи. Автоматические напоминания — ни одна дата не будет пропущена.</p>
-    </div>
-    <div class="fc fx">
-      <div class="fc-num">04</div>
-      <svg class="fc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <h3 class="fc-title">Документы и файлы</h3>
-      <p class="fc-desc">Прикрепляйте любые файлы к делам и клиентам. Безопасное хранение, быстрый доступ с любого устройства.</p>
-    </div>
-    <div class="fc fx d1">
-      <div class="fc-num">05</div>
-      <svg class="fc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      <h3 class="fc-title">Роли и права доступа</h3>
-      <p class="fc-desc">Три уровня: администратор, юрист, наблюдатель. Гибкий контроль видимости и действий.</p>
-    </div>
-    <div class="fc fx d2">
-      <div class="fc-num">06</div>
-      <svg class="fc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-      <h3 class="fc-title">iOS и Android</h3>
-      <p class="fc-desc">Нативные мобильные приложения. Полный функционал системы всегда в кармане.</p>
-    </div>
-  </div>
-</section>
-
-<section id="how">
-  <div class="how-grid">
-    <div class="how-sticky">
-      <p class="sect-label">Как работает</p>
-      <h2 class="how-title fx">Три шага<br>до порядка</h2>
-      <p class="how-sub fx d1">Начните работу сегодня — без долгого внедрения и обучения.</p>
-    </div>
-    <div class="how-steps">
-      <div class="hs fx">
-        <span class="hs-num">01</span>
-        <div>
-          <h3 class="hs-title">Войдите в систему</h3>
-          <p class="hs-desc">Учётные данные от администратора. Браузер, iOS или Android — доступ с любого устройства в любой момент.</p>
+  <header class="header">
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">
+          <i class="fas fa-gavel"></i> Law<span>CRM</span><span style="font-size:0.9rem;font-weight:500;">.su</span>
         </div>
-      </div>
-      <div class="hs fx d1">
-        <span class="hs-num">02</span>
-        <div>
-          <h3 class="hs-title">Ведите дела</h3>
-          <p class="hs-desc">Создавайте дела, добавляйте клиентов, прикрепляйте документы, ставьте события в календарь.</p>
-        </div>
-      </div>
-      <div class="hs fx d2">
-        <span class="hs-num">03</span>
-        <div>
-          <h3 class="hs-title">Контролируйте</h3>
-          <p class="hs-desc">Дашборд руководителя, статусы дел, активность команды. Решения на основе актуальных данных.</p>
-        </div>
+        <div class="menu-icon" id="menuToggle"><i class="fas fa-bars"></i></div>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#hero">Главная</a></li>
+          <li><a href="#features">Возможности</a></li>
+          <li><a href="#pricing">Тарифы</a></li>
+          <li><a href="#contact">Контакты</a></li>
+          <li><a href="/login" class="btn-outline-small">Демо-кабинет</a></li>
+        </ul>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
-<section id="quote">
-  <div class="quote-inner">
-    <span class="quote-mark">"</span>
-    <p class="quote-text fx">Порядок в делах — это порядок в голове. Хорошая система не просто хранит информацию — она освобождает время для главного.</p>
-    <p class="quote-attr fx d1">Команда LawCRM</p>
-  </div>
-</section>
+  <main>
+    <section class="hero" id="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-badge"><i class="fas fa-scale-balanced"></i> Специально для юристов</div>
+            <h1>Личный кабинет, который управляет практикой</h1>
+            <p>Автоматизация дел, клиентов, документов и сроков. Всё, что нужно юристу для продуктивной работы — в одном защищённом пространстве.</p>
+            <div class="hero-buttons">
+              <a href="#contact" class="btn-primary">Начать 14 дней бесплатно</a>
+              <a href="#demo" class="btn-secondary">Смотреть демо <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div style="margin-top:24px;font-size:0.85rem;color:#5F6F8A;">
+              <i class="fas fa-shield-alt"></i> Соответствие 152-ФЗ | Защита данных
+            </div>
+          </div>
+          <div class="hero-image">
+            <div class="mockup-dashboard">
+              <div class="mockup-stats">
+                <div class="stat-card"><i class="fas fa-folder-open"></i> 23 дела</div>
+                <div class="stat-card"><i class="fas fa-calendar-week"></i> 5 заседаний</div>
+                <div class="stat-card"><i class="fas fa-clock"></i> Срок: 3 дня</div>
+              </div>
+              <div style="margin-bottom:10px;"><i class="fas fa-chart-line" style="color:#2563EB;opacity:0.7;"></i> Активность клиентов +32%</div>
+              <div style="background:#EFF6FF;border-radius:20px;padding:12px;">
+                <i class="fas fa-file-signature"></i> Последний документ: Исковое заявление_v7
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section id="cta">
-  <h2 class="cta-title fx">Ваш личный кабинет<br><em>уже ждёт вас</em></h2>
-  <p class="cta-sub fx d1">Войдите и начните работать прямо сейчас</p>
-  <a href="/login" class="btn-cta fx d2">Войти в личный кабинет</a>
-</section>
+    <section id="features">
+      <div class="container">
+        <div class="section-title">Экосистема для юридического бизнеса</div>
+        <div class="section-sub">Инструменты, которые экономят десятки часов и снижают риски</div>
+        <div class="features-grid">
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-briefcase"></i></div><h3>Управление делами</h3><p>Полная картотека дел, статусы, участники, история и документы — всё под рукой.</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-users"></i></div><h3>Клиентская база</h3><p>Единый реестр клиентов, коммуникация, история обращений и автоматические напоминания.</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Умные документы</h3><p>Шаблоны исков, договоров, автоматическое заполнение и облачное хранение.</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-calendar-check"></i></div><h3>Календарь + сроки</h3><p>Контроль процессуальных сроков, судебные заседания, push-уведомления.</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-chart-pie"></i></div><h3>Финансы и отчётность</h3><p>Учёт гонораров, акты, отчёты по прибыли и интеграция с ЭДО.</p></div>
+          <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Безопасность и доступ</h3><p>Ролевая модель, двухфакторная аутентификация, шифрование данных.</p></div>
+        </div>
+      </div>
+    </section>
 
-<footer>
-  <span class="flogo">LawCRM</span>
-  <div class="flinks">
-    <a href="#features">Возможности</a>
-    <a href="#how">Как работает</a>
-    <a href="mailto:support@lawcrm.su">Поддержка</a>
-  </div>
-  <span class="fcopy">© 2025 LawCRM</span>
-</footer>
+    <section style="background:#FFFFFF;">
+      <div class="container">
+        <div class="section-title">Почему 700+ юристов выбирают LawCRM</div>
+        <div class="why-grid">
+          <div class="why-item"><div class="why-icon"><i class="fas fa-hourglass-half"></i></div><h3>Экономия времени</h3><p>Сокращение рутины на 40% за счёт автоматизации отчётов и документов.</p></div>
+          <div class="why-item"><div class="why-icon"><i class="fas fa-chart-line"></i></div><h3>Рост эффективности</h3><p>Увеличение закрытых дел до +25% за счёт строгого контроля.</p></div>
+          <div class="why-item"><div class="why-icon"><i class="fas fa-headset"></i></div><h3>Поддержка 24/7</h3><p>Профессиональная команда юристов и техподдержка.</p></div>
+        </div>
+      </div>
+    </section>
 
-<!-- LIBRARIES -->
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js"}}
-</script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <section>
+      <div class="container">
+        <div class="section-title">Как начать работу за 5 минут</div>
+        <div class="steps">
+          <div class="step"><div class="step-number">1</div><h3>Регистрация</h3><p>Заполните форму, получите доступ к демо-периоду.</p></div>
+          <div class="step"><div class="step-number">2</div><h3>Настройка профиля</h3><p>Импортируйте клиентов, шаблоны и календарь.</p></div>
+          <div class="step"><div class="step-number">3</div><h3>Работайте эффективно</h3><p>Ведите дела, создавайте документы и контролируйте сроки.</p></div>
+        </div>
+      </div>
+    </section>
 
-<script type="module">
-import * as THREE from 'three';
-gsap.registerPlugin(ScrollTrigger);
+    <section id="demo" class="dashboard-preview" style="padding:60px 0;margin:0;">
+      <div class="container">
+        <div class="preview-card">
+          <div style="text-align:center;">
+            <i class="fas fa-user-circle" style="font-size:2.8rem;color:#2563EB;"></i>
+            <h3 style="margin:8px 0 4px;">Пример личного кабинета юриста</h3>
+            <p>Интерфейс LawCRM: всё самое важное на одной панели</p>
+          </div>
+          <div class="dashboard-widgets">
+            <div class="widget"><i class="fas fa-scale-balanced"></i><h4>Активные дела</h4><p style="font-size:1.8rem;font-weight:700;">14</p><span>+3 за неделю</span></div>
+            <div class="widget"><i class="fas fa-hourglass-start"></i><h4>Истекающие сроки</h4><p style="font-size:1.6rem;font-weight:700;">2 дня</p><span>Апелляция — 12.06</span></div>
+            <div class="widget"><i class="fas fa-file-invoice"></i><h4>Новые документы</h4><p style="font-size:1.4rem;">8 шаблонов</p><span>Иск, претензия, договор</span></div>
+            <div class="widget"><i class="fas fa-comment-dots"></i><h4>Сообщения клиентов</h4><p>3 непрочитанных</p><span>Быстрый чат внутри CRM</span></div>
+          </div>
+          <div style="text-align:center;margin-top:28px;">
+            <a href="#contact" class="btn-primary" style="background:#1E3A8A;">Запросить демо-доступ →</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-const W = () => window.innerWidth, H = () => window.innerHeight;
-const canvas = document.getElementById('c3d');
+    <section id="pricing">
+      <div class="container">
+        <div class="section-title">Тарифы для любой практики</div>
+        <div class="section-sub">Выберите оптимальный план или свяжитесь для корпоративного решения</div>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>Start</h3>
+            <div class="price">990 ₽ <small>/мес</small></div>
+            <p>Для индивидуальных юристов и адвокатов</p>
+            <ul style="margin:20px 0;list-style:none;line-height:2;">
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> До 200 дел</li>
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> 5 ГБ документов</li>
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> Базовая аналитика</li>
+            </ul>
+            <a href="#contact" class="btn-secondary" style="width:100%;text-align:center;display:block;">Выбрать</a>
+          </div>
+          <div class="pricing-card popular">
+            <div class="popular-badge"><i class="fas fa-star"></i> Популярный</div>
+            <h3>Professional</h3>
+            <div class="price">1 990 ₽ <small>/мес</small></div>
+            <p>Для малых юридических фирм (до 5 юристов)</p>
+            <ul style="margin:20px 0;list-style:none;line-height:2;">
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> Неограниченно дел</li>
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> 50 ГБ + ЭДО</li>
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> Умные отчёты</li>
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> Приоритетная поддержка</li>
+            </ul>
+            <a href="#contact" class="btn-primary" style="width:100%;text-align:center;display:block;">Попробовать 14 дней</a>
+          </div>
+          <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <div class="price">Индивидуально</div>
+            <p>Для крупных коллегий и холдингов</p>
+            <ul style="margin:20px 0;list-style:none;line-height:2;">
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> Расширенная интеграция</li>
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> SLA 99.9%</li>
+              <li><i class="fas fa-check-circle" style="color:#2563EB;"></i> Выделенный сервер</li>
+            </ul>
+            <a href="#contact" class="btn-secondary" style="width:100%;text-align:center;display:block;">Связаться</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-/* ── RENDERER ── */
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(55, W()/H(), 0.1, 80);
-camera.position.set(0, 0, 7);
+    <section id="contact">
+      <div class="container">
+        <div class="contact-wrapper-single">
+          <h2 style="font-size:1.8rem;margin-bottom:16px;text-align:center;">Оставьте заявку</h2>
+          <p style="text-align:center;margin-bottom:28px;color:#4B5E77;">Наши специалисты помогут подобрать тариф, проведут демо и ответят на вопросы.</p>
+          <form id="callbackForm">
+            <div class="form-group"><input type="text" id="name" placeholder="Ваше имя *" required></div>
+            <div class="form-group"><input type="email" id="email" placeholder="Email *" required></div>
+            <div class="form-group"><input type="tel" id="phone" placeholder="Телефон"></div>
+            <div class="form-group"><textarea rows="3" id="message" placeholder="Сообщение или вопрос"></textarea></div>
+            <button type="submit" class="btn-primary" style="width:100%;">Отправить заявку <i class="fas fa-paper-plane"></i></button>
+            <p style="font-size:12px;margin-top:16px;text-align:center;color:#8099B3;">Нажимая на кнопку, вы соглашаетесь с политикой обработки персональных данных.</p>
+          </form>
+          <div id="formMessage" style="margin-top:15px;font-weight:500;text-align:center;"></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-renderer.setSize(W(), H());
-renderer.setClearColor(0x0B0B0D, 1);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
+  <footer class="footer">
+    <div class="container">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px;">
+        <div><i class="fas fa-gavel"></i> LawCRM.su — <strong>Профессиональный инструмент юриста</strong><br>© 2026 Все права защищены.</div>
+        <div><a href="#">Политика конфиденциальности</a> | <a href="#">Пользовательское соглашение</a><br><i class="fab fa-vk"></i>&nbsp;<i class="fab fa-telegram"></i>&nbsp;<i class="fab fa-youtube"></i></div>
+      </div>
+      <div class="footer-bottom">Разработано для юристов и юридических компаний. Личный кабинет нового поколения.</div>
+    </div>
+  </footer>
 
-window.addEventListener('resize', () => {
-  camera.aspect = W()/H();
-  camera.updateProjectionMatrix();
-  renderer.setSize(W(), H());
-});
-
-/* ── MATERIALS ── */
-const cream = new THREE.Color(0xC2B09A);
-
-/* ── MAIN WIREFRAME: large icosahedron ── */
-const mainGeo = new THREE.IcosahedronGeometry(2.4, 1);
-const mainMat = new THREE.MeshBasicMaterial({color:cream, wireframe:true, transparent:true, opacity:0.07});
-const mainMesh = new THREE.Mesh(mainGeo, mainMat);
-mainMesh.position.set(2.8, 0.2, -0.5);
-scene.add(mainMesh);
-
-/* ── INNER WIREFRAME ── */
-const inner = new THREE.Mesh(
-  new THREE.IcosahedronGeometry(1.3, 1),
-  new THREE.MeshBasicMaterial({color:cream, wireframe:true, transparent:true, opacity:0.045})
-);
-inner.position.set(2.8, 0.2, -0.5);
-scene.add(inner);
-
-/* ── PARTICLES ── */
-const N = 320;
-const ppos = new Float32Array(N * 3);
-for (let i = 0; i < N; i++) {
-  const r = 2.5 + Math.random() * 4.5;
-  const th = Math.random() * Math.PI * 2;
-  const ph = (Math.random() - 0.5) * Math.PI;
-  ppos[i*3]   = r * Math.cos(th) * Math.cos(ph) + 1.5;
-  ppos[i*3+1] = r * Math.sin(ph);
-  ppos[i*3+2] = r * Math.sin(th) * Math.cos(ph) - 1;
-}
-const pgeo = new THREE.BufferGeometry();
-pgeo.setAttribute('position', new THREE.BufferAttribute(ppos, 3));
-scene.add(new THREE.Points(pgeo, new THREE.PointsMaterial({
-  color: cream, size: 0.022, transparent: true, opacity: 0.28, sizeAttenuation: true
-})));
-
-/* ── SCROLL ANIMATIONS ── */
-gsap.to(mainMesh.position, {x:-2.5, y:-0.8, ease:'none',
-  scrollTrigger:{trigger:'#features', start:'top bottom', end:'bottom top', scrub:3}});
-gsap.to(inner.position, {x:-2.5, y:-0.8, ease:'none',
-  scrollTrigger:{trigger:'#features', start:'top bottom', end:'bottom top', scrub:3}});
-gsap.to(mainMat, {opacity:0.04, ease:'none',
-  scrollTrigger:{trigger:'#features', start:'top bottom', end:'bottom top', scrub:3}});
-
-/* ── LOOP ── */
-const clock = new THREE.Clock();
-let mx=0, my=0, tmx=0, tmy=0;
-document.addEventListener('mousemove', e => {
-  tmx = (e.clientX/W() - 0.5) * 0.45;
-  tmy = (e.clientY/H() - 0.5) * 0.22;
-});
-
-function animate() {
-  requestAnimationFrame(animate);
-  const t = clock.getElapsedTime();
-  mx += (tmx-mx) * 0.04;
-  my += (tmy-my) * 0.04;
-
-  mainMesh.rotation.x = t * 0.055 + my * 0.4;
-  mainMesh.rotation.y = t * 0.08  + mx * 0.4;
-  inner.rotation.x = -t * 0.07  + my * 0.25;
-  inner.rotation.y = -t * 0.11  + mx * 0.25;
-
-  camera.position.x = mx * 0.4;
-  camera.position.y = -my * 0.25;
-  camera.lookAt(0.5, 0, 0);
-
-  renderer.render(scene, camera);
-}
-animate();
-
-/* ── UI ── */
-const prog = document.getElementById('prog');
-window.addEventListener('scroll', () => {
-  prog.style.width = (scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
-}, {passive:true});
-
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 60), {passive:true});
-
-// Cursor
-const cur = document.getElementById('cur'), cring = document.getElementById('cring');
-let cx=0,cy=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { cx=e.clientX; cy=e.clientY; });
-(function lc(){
-  rx+=(cx-rx)*.1; ry+=(cy-ry)*.1;
-  cur.style.left=cx+'px'; cur.style.top=cy+'px';
-  cring.style.left=(rx-14)+'px'; cring.style.top=(ry-14)+'px';
-  requestAnimationFrame(lc);
-})();
-document.querySelectorAll('a,button,.fc').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
-});
-
-// Reveals
-const obs = new IntersectionObserver(es => {
-  es.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
-}, {threshold:0.1});
-document.querySelectorAll('.fx').forEach(el => obs.observe(el));
-
-// Counters
-let counted = false;
-new IntersectionObserver(es => {
-  if(!counted && es[0].isIntersecting){
-    counted = true;
-    document.querySelectorAll('.sn[data-t]').forEach(el => {
-      const tgt=+el.dataset.t, suf=el.dataset.s||'';
-      const s=performance.now();
-      (function tick(n){
-        const p=Math.min((n-s)/1800,1), e=1-Math.pow(1-p,4);
-        el.textContent=Math.round(e*tgt)+suf;
-        if(p<1) requestAnimationFrame(tick);
-      })(performance.now());
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (menuToggle) menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+    document.querySelectorAll('.nav-links a').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('active')));
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(e) {
+        const id = this.getAttribute('href');
+        if (id === '#') return;
+        const el = document.querySelector(id);
+        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
     });
-  }
-}, {threshold:0.4}).observe(document.getElementById('metrics'));
-
-// Smooth anchors
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const el = document.getElementById(a.getAttribute('href').slice(1));
-    if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
-  });
-});
-</script>
+    const form = document.getElementById('callbackForm');
+    const msgDiv = document.getElementById('formMessage');
+    if (form) {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        if (!name || !email) { msgDiv.innerHTML = '<span style="color:#DC2626;">Пожалуйста, заполните имя и email.</span>'; return; }
+        msgDiv.innerHTML = '<span style="color:#16A34A;">✓ Спасибо! Наш менеджер свяжется с вами в ближайшее время.</span>';
+        form.reset();
+        setTimeout(() => { msgDiv.innerHTML = ''; }, 5000);
+      });
+    }
+  </script>
 </body>
 </html>
