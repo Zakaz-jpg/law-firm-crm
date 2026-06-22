@@ -9,7 +9,7 @@ import app.models  # noqa: F401 — регистрирует все модели
 app = FastAPI(
     title="Law Firm CRM",
     description="REST API для мобильного приложения юриста",
-    version="1.0.0",
+    version="1.1.0",
 )
 
 app.add_middleware(
@@ -51,6 +51,8 @@ def _run_migrations():
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS defendant_id INTEGER REFERENCES clients(id)",
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS lead_lawyer_id INTEGER REFERENCES company_lawyers(id)",
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS current_stage_id INTEGER REFERENCES case_stages(id)",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_company_lawyers_user_id ON company_lawyers(user_id) WHERE user_id IS NOT NULL",
     ]
     for sql in migrations:
         try:

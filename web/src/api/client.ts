@@ -1,4 +1,4 @@
-import type { Case, Client, Attachment, TokenResponse, SyncResponse, CalendarEvent, CaseStage, CompanyLawyer, EnforcementRecord } from './types'
+import type { Case, Client, Attachment, TokenResponse, SyncResponse, CalendarEvent, CaseStage, CompanyLawyer, EnforcementRecord, AdminUser } from './types'
 
 const BASE_URL_KEY = 'lawcrm_base_url'
 const ACCESS_TOKEN_KEY = 'lawcrm_access_token'
@@ -181,10 +181,18 @@ export const api = {
     request<CalendarEvent[]>(`/calendar?start=${start}&end=${end}`),
 
   // Admin
-  adminUsers: () => request<any[]>('/admin/users'),
+  adminUsers: () => request<AdminUser[]>('/admin/users'),
   adminLogs: () => request<any[]>('/admin/logs'),
-  adminUpdateUser: (id: number, data: object) => request<any>(`/admin/users/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+  adminCreateUser: (data: { email: string; full_name: string; password: string; role?: string }) =>
+    request<AdminUser>('/admin/users', { method: 'POST', body: JSON.stringify(data) }),
+  adminUpdateUser: (id: number, data: object) => request<AdminUser>(`/admin/users/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
   adminDeleteUser: (id: number) => request<void>(`/admin/users/${id}`, { method: 'DELETE' }),
+  adminCreateLawyerAccount: (lawyerId: number, data: { email: string; password: string }) =>
+    request<AdminUser>(`/admin/lawyers/${lawyerId}/create-account`, { method: 'POST', body: JSON.stringify(data) }),
+
+  // Case assignment
+  assignCase: (caseId: number, lawyerUserId: number) =>
+    request<Case>(`/cases/${caseId}/assign`, { method: 'POST', body: JSON.stringify({ lawyer_user_id: lawyerUserId }) }),
 
   // Sync
   sync: () => request<SyncResponse>('/sync'),

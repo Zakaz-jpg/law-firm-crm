@@ -20,6 +20,7 @@ class CompanyLawyerUpdate(CompanyLawyerCreate):
 
 class CompanyLawyerRead(CompanyLawyerCreate):
     id: int
+    user_id: Optional[int] = None
     created_at: datetime
     updated_at: datetime
 

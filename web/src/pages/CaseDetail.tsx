@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
-import type { Case, CaseStage, EnforcementRecord } from '../api/types'
+import { useAuth } from '../context/AuthContext'
+import type { Case, CaseStage, EnforcementRecord, AdminUser } from '../api/types'
 import { STATUS_LABELS, STATUS_COLORS, CATEGORY_LABELS, STAGE_TYPE_LABELS, STAGE_STATUS_LABELS } from '../api/types'
 import s from './CaseDetail.module.css'
 
@@ -19,6 +20,8 @@ function PencilIcon() {
 export default function CaseDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { user: currentUser } = useAuth()
+  const isAdmin = currentUser?.role === 'admin'
   const [caseData, setCaseData] = useState<Case | null>(null)
   const [loading, setLoading] = useState(true)
   const [statusLoading, setStatusLoading] = useState(false)
@@ -83,6 +86,8 @@ export default function CaseDetail() {
 
         <EditableDetails caseData={caseData} onSave={saveField} />
 
+        {isAdmin && <AssignLawyerSection caseData={caseData} onAssigned={setCaseData} />}
+
         {caseData.client && (
           <div className={s.card}>
             <h3 className={s.cardTitle}>Клиент</h3>
@@ -125,6 +130,60 @@ export default function CaseDetail() {
             </div>
           )}
         </div>
+      </div>
+    </div>
+  )
+}
+
+function AssignLawyerSection({ caseData, onAssigned }: { caseData: Case; onAssigned: (c: Case) => void }) {
+  const [users, setUsers] = useState<AdminUser[]>([])
+  const [selectedId, setSelectedId] = useState<number>(caseData.lawyer_id)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => { api.adminUsers().then(setUsers).catch(() => {}) }, [])
+  useEffect(() => { setSelectedId(caseData.lawyer_id) }, [caseData.lawyer_id])
+
+  const currentLawyer = users.find(u => u.id === caseData.lawyer_id)
+
+  async function assign() {
+    if (selectedId === caseData.lawyer_id) return
+    setSaving(true); setError('')
+    try {
+      const updated = await api.assignCase(caseData.id, selectedId)
+      onAssigned(updated)
+    } catch (err: any) { setError(err.message ?? 'Ошибка') }
+    finally { setSaving(false) }
+  }
+
+  return (
+    <div className={s.card}>
+      <h3 className={s.cardTitle}>Назначить юриста</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {currentLawyer && (
+          <div style={{ fontSize: '13px', color: 'var(--c-text-2)' }}>
+            Сейчас: <strong>{currentLawyer.full_name}</strong> ({currentLawyer.email})
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <select
+            value={selectedId}
+            onChange={e => setSelectedId(Number(e.target.value))}
+            style={{ flex: 1, padding: '7px 10px', borderRadius: '7px', border: '1.5px solid var(--c-border)', fontSize: '13px', background: 'var(--c-surface)' }}
+          >
+            {users.filter(u => u.is_active).map(u => (
+              <option key={u.id} value={u.id}>{u.full_name} ({u.email})</option>
+            ))}
+          </select>
+          <button
+            onClick={assign}
+            disabled={saving || selectedId === caseData.lawyer_id}
+            style={{ padding: '7px 16px', borderRadius: '7px', border: 'none', background: '#2563eb', color: '#fff', fontSize: '13px', fontWeight: 600, cursor: 'pointer', opacity: (saving || selectedId === caseData.lawyer_id) ? 0.5 : 1 }}
+          >
+            {saving ? 'Сохраняю...' : 'Назначить'}
+          </button>
+        </div>
+        {error && <div style={{ fontSize: '12px', color: '#dc2626' }}>{error}</div>}
       </div>
     </div>
   )

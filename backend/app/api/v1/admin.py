@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.deps import get_current_user
 from app.database import get_db
 from app.models.audit_log import AuditLog
+from app.models.company_lawyer import CompanyLawyer
 from app.models.user import User
 from app.schemas.user import UserRead, UserUpdate
 from app.core.security import hash_password
@@ -62,6 +63,13 @@ def list_logs(
 
 # ── Users ──
 
+class UserAdminCreate(BaseModel):
+    email: str
+    full_name: str
+    password: str
+    role: str = "lawyer"
+
+
 class UserAdminUpdate(BaseModel):
     full_name: Optional[str] = None
     role: Optional[str] = None
@@ -69,9 +77,60 @@ class UserAdminUpdate(BaseModel):
     password: Optional[str] = None
 
 
+class LawyerAccountCreate(BaseModel):
+    email: str
+    password: str
+
+
 @router.get("/users", response_model=List[UserRead])
 def list_users(db: Session = Depends(get_db), admin: User = Depends(_require_admin)):
     return db.query(User).order_by(User.created_at).all()
+
+
+@router.post("/users", response_model=UserRead, status_code=201)
+def create_user(data: UserAdminCreate, db: Session = Depends(get_db), admin: User = Depends(_require_admin)):
+    if db.query(User).filter(User.email == data.email).first():
+        raise HTTPException(status_code=400, detail="Email уже зарегистрирован")
+    user = User(
+        email=data.email,
+        full_name=data.full_name,
+        hashed_password=hash_password(data.password),
+        role=data.role,
+        is_active=True,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+@router.post("/lawyers/{lawyer_id}/create-account", response_model=UserRead, status_code=201)
+def create_lawyer_account(
+    lawyer_id: int,
+    data: LawyerAccountCreate,
+    db: Session = Depends(get_db),
+    admin: User = Depends(_require_admin),
+):
+    lawyer = db.get(CompanyLawyer, lawyer_id)
+    if not lawyer:
+        raise HTTPException(status_code=404, detail="Юрист не найден")
+    if lawyer.user_id:
+        raise HTTPException(status_code=400, detail="У этого юриста уже есть аккаунт")
+    if db.query(User).filter(User.email == data.email).first():
+        raise HTTPException(status_code=400, detail="Email уже зарегистрирован")
+    user = User(
+        email=data.email,
+        full_name=lawyer.full_name,
+        hashed_password=hash_password(data.password),
+        role="lawyer",
+        is_active=True,
+    )
+    db.add(user)
+    db.flush()
+    lawyer.user_id = user.id
+    db.commit()
+    db.refresh(user)
+    return user
 
 
 @router.patch("/users/{user_id}", response_model=UserRead)

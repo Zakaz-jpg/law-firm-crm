@@ -100,6 +100,16 @@ export interface CompanyLawyer {
   phone: string | null
   email: string | null
   is_active: boolean
+  user_id: number | null
+}
+
+export interface AdminUser {
+  id: number
+  email: string
+  full_name: string
+  role: string
+  is_active: boolean
+  created_at: string
 }
 
 export const STAGE_TYPE_LABELS: Record<string, string> = {

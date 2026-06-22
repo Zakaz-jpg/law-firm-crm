@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { api } from '../api/client'
+import type { AdminUser } from '../api/types'
 import s from './Admin.module.css'
 
 const ROLES = [
@@ -12,7 +13,6 @@ const ROLES = [
   { value: 'viewer', label: 'Только чтение' },
 ]
 
-interface AdminUser { id: number; email: string; full_name: string; role: string; is_active: boolean; created_at: string }
 interface LogEntry { id: number; user_email: string | null; action: string; entity_type: string; entity_id: number | null; new_value: string | null; created_at: string }
 
 export default function Admin() {
@@ -25,18 +25,19 @@ export default function Admin() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
+  const [createModal, setCreateModal] = useState(false)
+  const [createForm, setCreateForm] = useState({ email: '', full_name: '', password: '', role: 'lawyer' })
+  const [createSaving, setCreateSaving] = useState(false)
+  const [createError, setCreateError] = useState('')
+
   const isAdmin = user?.role === 'admin'
 
   useEffect(() => {
     if (!isAdmin) return
     setLoading(true)
-    const load = tab === 'users'
-      ? fetch(`${(api as any).baseURL ?? ''}`, { headers: { Authorization: `Bearer ${localStorage.getItem('lawcrm_access_token')}` } }).then(() => {})
-      : Promise.resolve()
-
     Promise.all([
-      tab === 'users' ? (api as any).adminUsers() : Promise.resolve(null),
-      tab === 'logs' ? (api as any).adminLogs() : Promise.resolve(null),
+      tab === 'users' ? api.adminUsers() : Promise.resolve(null),
+      tab === 'logs' ? api.adminLogs() : Promise.resolve(null),
     ]).then(([u, l]) => {
       if (u) setUsers(u)
       if (l) setLogs(l)
@@ -46,7 +47,7 @@ export default function Admin() {
   async function saveUser(u: AdminUser, patch: Partial<AdminUser>) {
     setSaving(true); setError('')
     try {
-      const updated = await (api as any).adminUpdateUser(u.id, patch)
+      const updated = await api.adminUpdateUser(u.id, patch)
       setUsers(prev => prev.map(x => x.id === u.id ? updated : x))
       setEditUser(null)
     } catch (err: any) { setError(err.message ?? 'Ошибка') }
@@ -55,8 +56,20 @@ export default function Admin() {
 
   async function deleteUser(id: number) {
     if (!confirm('Удалить пользователя?')) return
-    await (api as any).adminDeleteUser(id)
+    await api.adminDeleteUser(id)
     setUsers(prev => prev.filter(x => x.id !== id))
+  }
+
+  async function createUser(e: React.FormEvent) {
+    e.preventDefault()
+    setCreateSaving(true); setCreateError('')
+    try {
+      const created = await api.adminCreateUser(createForm)
+      setUsers(prev => [...prev, created])
+      setCreateModal(false)
+      setCreateForm({ email: '', full_name: '', password: '', role: 'lawyer' })
+    } catch (err: any) { setCreateError(err.message ?? 'Ошибка') }
+    finally { setCreateSaving(false) }
   }
 
   if (!isAdmin) {
@@ -71,6 +84,14 @@ export default function Admin() {
         <button className={`${s.tab} ${tab === 'users' ? s.tabActive : ''}`} onClick={() => setTab('users')}>Пользователи</button>
         <button className={`${s.tab} ${tab === 'logs' ? s.tabActive : ''}`} onClick={() => setTab('logs')}>Логи</button>
       </div>
+
+      {tab === 'users' && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
+          <button className={s.editBtn} onClick={() => { setCreateModal(true); setCreateError('') }}>
+            + Создать пользователя
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <div className={s.loading}>Загрузка...</div>
@@ -113,6 +134,41 @@ export default function Admin() {
             </div>
           ))}
           {logs.length === 0 && <p className={s.empty}>Логов нет</p>}
+        </div>
+      )}
+
+      {createModal && (
+        <div className={s.overlay} onClick={e => e.target === e.currentTarget && setCreateModal(false)}>
+          <div className={s.modal}>
+            <h2 className={s.modalTitle}>Новый пользователь</h2>
+            <form className={s.form} onSubmit={createUser}>
+              <label className={s.label}>Email
+                <input className={s.input} type="email" required value={createForm.email}
+                  onChange={e => setCreateForm(f => ({ ...f, email: e.target.value }))} />
+              </label>
+              <label className={s.label}>ФИО
+                <input className={s.input} required value={createForm.full_name}
+                  onChange={e => setCreateForm(f => ({ ...f, full_name: e.target.value }))} />
+              </label>
+              <label className={s.label}>Пароль
+                <input className={s.input} type="password" required minLength={6} value={createForm.password}
+                  onChange={e => setCreateForm(f => ({ ...f, password: e.target.value }))} />
+              </label>
+              <label className={s.label}>Роль
+                <select className={s.select} value={createForm.role}
+                  onChange={e => setCreateForm(f => ({ ...f, role: e.target.value }))}>
+                  {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                </select>
+              </label>
+              {createError && <div className={s.error}>{createError}</div>}
+              <div className={s.btns}>
+                <button type="button" className={s.cancelBtn} onClick={() => setCreateModal(false)}>Отмена</button>
+                <button type="submit" className={s.saveBtn} disabled={createSaving}>
+                  {createSaving ? 'Создаю...' : 'Создать'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
