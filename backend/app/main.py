@@ -51,8 +51,17 @@ def _run_migrations():
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS defendant_id INTEGER REFERENCES clients(id)",
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS lead_lawyer_id INTEGER REFERENCES company_lawyers(id)",
         "ALTER TABLE cases ADD COLUMN IF NOT EXISTS current_stage_id INTEGER REFERENCES case_stages(id)",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS position VARCHAR(100)",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS specialization VARCHAR(200)",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS phone VARCHAR(20)",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS email VARCHAR(100)",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS is_active INTEGER DEFAULT 1",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS notes TEXT",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS created_at DATETIME DEFAULT CURRENT_TIMESTAMP",
+        "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS updated_at DATETIME DEFAULT CURRENT_TIMESTAMP",
         "ALTER TABLE company_lawyers ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
         "CREATE UNIQUE INDEX IF NOT EXISTS idx_company_lawyers_user_id ON company_lawyers(user_id) WHERE user_id IS NOT NULL",
+        "ALTER TABLE cases ADD COLUMN IF NOT EXISTS lawyer_id INTEGER REFERENCES users(id)",
     ]
     for sql in migrations:
         try:
