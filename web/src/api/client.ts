@@ -90,6 +90,23 @@ export const api = {
       return r.json() as Promise<TokenResponse>
     }),
 
+  requestCode: (email: string) =>
+    fetch(`${getBaseUrl()}/api/v1/auth/request-code`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'bypass-tunnel-reminder': 'true' },
+      body: JSON.stringify({ email }),
+    }).then(async r => { if (!r.ok) throw new Error(await errorMessage(r)) }),
+
+  verifyCode: (email: string, code: string) =>
+    fetch(`${getBaseUrl()}/api/v1/auth/verify-code`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'bypass-tunnel-reminder': 'true' },
+      body: JSON.stringify({ email, code }),
+    }).then(async r => {
+      if (!r.ok) throw new Error(await errorMessage(r))
+      return r.json() as Promise<TokenResponse>
+    }),
+
   me: () => request<{ id: number; email: string; full_name: string; role: string }>('/auth/me'),
 
   updateProfile: (data: { full_name?: string; role?: string }) =>

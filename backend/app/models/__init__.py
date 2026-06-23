@@ -6,6 +6,7 @@ from app.models.case import Case, CaseEvent
 from app.models.attachment import Attachment
 from app.models.enforcement import Enforcement
 from app.models.audit_log import AuditLog
+from app.models.email_code import EmailCode
 
 __all__ = ["User", "DeviceToken", "Client", "CompanyLawyer", "CaseStage", "Case", "CaseEvent",
-           "Attachment", "Enforcement", "AuditLog"]
+           "Attachment", "Enforcement", "AuditLog", "EmailCode"]
