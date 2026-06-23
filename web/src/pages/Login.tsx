@@ -4,41 +4,44 @@ import { useAuth } from '../context/AuthContext'
 import { api, getBaseUrl, setBaseUrl, saveTokens } from '../api/client'
 import s from './Login.module.css'
 
-type Step = 'email' | 'code' | 'password'
+type Step = 'credentials' | 'code'
 
 export default function Login() {
   const { login } = useAuth()
   const navigate = useNavigate()
 
-  const [step, setStep] = useState<Step>('email')
+  const [step, setStep] = useState<Step>('credentials')
   const [email, setEmail] = useState('')
-  const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
+  const [code, setCode] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(true)
   const [serverUrl, setServerUrl] = useState(getBaseUrl)
   const [showServer, setShowServer] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [codeSent, setCodeSent] = useState(false)
 
-  async function handleRequestCode(e: FormEvent) {
+  // Step 1: validate password, then send code
+  async function handleCredentials(e: FormEvent) {
     e.preventDefault()
     if (serverUrl) setBaseUrl(serverUrl)
     setLoading(true)
     setError('')
     try {
+      // Validate password (tokens discarded — only used to confirm credentials)
+      await api.login(email, password)
+      // Password OK → send verification code
       await api.requestCode(email)
-      setCodeSent(true)
       setStep('code')
     } catch (err) {
-      setError((err as Error).message || 'Ошибка отправки кода')
+      setError((err as Error).message || 'Неверный email или пароль')
     } finally {
       setLoading(false)
     }
   }
 
-  async function handleVerifyCode(e: FormEvent) {
+  // Step 2: verify code → save tokens → enter app
+  async function handleCode(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
@@ -47,22 +50,7 @@ export default function Login() {
       saveTokens(tokens, remember)
       navigate('/cases')
     } catch (err) {
-      setError((err as Error).message || 'Неверный код')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  async function handlePasswordLogin(e: FormEvent) {
-    e.preventDefault()
-    if (serverUrl) setBaseUrl(serverUrl)
-    setLoading(true)
-    setError('')
-    try {
-      await login(email, password, remember)
-      navigate('/cases')
-    } catch (err) {
-      setError((err as Error).message || 'Ошибка входа')
+      setError((err as Error).message || 'Неверный или истёкший код')
     } finally {
       setLoading(false)
     }
@@ -108,9 +96,9 @@ export default function Login() {
         <div className={s.card}>
           {logo}
           <p style={{ textAlign: 'center', fontSize: '14px', color: '#64748b', marginBottom: '20px' }}>
-            Код отправлен на <strong>{email}</strong>
+            Код подтверждения отправлен на <strong>{email}</strong>
           </p>
-          <form className={s.form} onSubmit={handleVerifyCode}>
+          <form className={s.form} onSubmit={handleCode}>
             <div className={s.field}>
               <label className={s.label} htmlFor="code">Код из письма</label>
               <input
@@ -142,10 +130,19 @@ export default function Login() {
             </button>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px' }}>
-              <button type="button" className={s.serverToggle} onClick={() => { setStep('email'); setError(''); setCode('') }}>
-                Изменить email
+              <button type="button" className={s.serverToggle} onClick={() => { setStep('credentials'); setError(''); setCode('') }}>
+                Назад
               </button>
-              <button type="button" className={s.serverToggle} onClick={() => { setError(''); setCode(''); setCodeSent(false); handleRequestCode({ preventDefault: () => {} } as FormEvent) }}>
+              <button
+                type="button"
+                className={s.serverToggle}
+                disabled={loading}
+                onClick={async () => {
+                  setError('')
+                  setCode('')
+                  try { await api.requestCode(email) } catch (err) { setError((err as Error).message) }
+                }}
+              >
                 Отправить снова
               </button>
             </div>
@@ -156,76 +153,11 @@ export default function Login() {
     )
   }
 
-  if (step === 'password') {
-    return (
-      <div className={s.page}>
-        <div className={s.card}>
-          {logo}
-          <form className={s.form} onSubmit={handlePasswordLogin}>
-            <div className={s.field}>
-              <label className={s.label} htmlFor="email-pw">Email</label>
-              <input id="email-pw" className={s.input} type="email" placeholder="name@firm.com" value={email} onChange={e => setEmail(e.target.value)} required autoComplete="email" />
-            </div>
-
-            <div className={s.field}>
-              <label className={s.label} htmlFor="password">Пароль</label>
-              <div className={s.passwordWrap}>
-                <input
-                  id="password"
-                  className={s.input}
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required
-                  autoComplete="current-password"
-                />
-                <button className={s.eyeBtn} type="button" onClick={() => setShowPassword(v => !v)} tabIndex={-1}>
-                  {showPassword ? (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                      <line x1="1" y1="1" x2="23" y2="23"/>
-                    </svg>
-                  ) : (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                      <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {error && <div className={s.error}>{error}</div>}
-
-            <div className={s.options}>
-              <label className={s.checkLabel}>
-                <input type="checkbox" className={s.checkbox} checked={remember} onChange={e => setRemember(e.target.checked)} />
-                <span className={s.checkText}>Запомнить меня</span>
-              </label>
-            </div>
-
-            <button className={s.btn} type="submit" disabled={loading}>
-              {loading ? <span className={s.spinner} /> : 'Войти'}
-            </button>
-
-            <button type="button" className={s.serverToggle} style={{ display: 'block', margin: '12px auto 0' }} onClick={() => { setStep('email'); setError('') }}>
-              Войти через код на почту
-            </button>
-          </form>
-          {serverSection}
-        </div>
-      </div>
-    )
-  }
-
-  // Step: email
   return (
     <div className={s.page}>
       <div className={s.card}>
         {logo}
-        <form className={s.form} onSubmit={handleRequestCode}>
+        <form className={s.form} onSubmit={handleCredentials}>
           <div className={s.field}>
             <label className={s.label} htmlFor="email">Email</label>
             <input
@@ -241,14 +173,47 @@ export default function Login() {
             />
           </div>
 
+          <div className={s.field}>
+            <label className={s.label} htmlFor="password">Пароль</label>
+            <div className={s.passwordWrap}>
+              <input
+                id="password"
+                className={s.input}
+                type={showPassword ? 'text' : 'password'}
+                placeholder="••••••••"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+              />
+              <button className={s.eyeBtn} type="button" onClick={() => setShowPassword(v => !v)} tabIndex={-1}>
+                {showPassword ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+
           {error && <div className={s.error}>{error}</div>}
 
-          <button className={s.btn} type="submit" disabled={loading}>
-            {loading ? <span className={s.spinner} /> : 'Получить код'}
-          </button>
+          <div className={s.options}>
+            <label className={s.checkLabel}>
+              <input type="checkbox" className={s.checkbox} checked={remember} onChange={e => setRemember(e.target.checked)} />
+              <span className={s.checkText}>Запомнить меня</span>
+            </label>
+          </div>
 
-          <button type="button" className={s.serverToggle} style={{ display: 'block', margin: '12px auto 0' }} onClick={() => { setStep('password'); setError('') }}>
-            Войти с паролем
+          <button className={s.btn} type="submit" disabled={loading}>
+            {loading ? <span className={s.spinner} /> : 'Далее'}
           </button>
         </form>
         {serverSection}
