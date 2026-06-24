@@ -1,13 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { api, getBaseUrl, setBaseUrl, saveTokens } from '../api/client'
+import { api, getBaseUrl, setBaseUrl } from '../api/client'
 import s from './Login.module.css'
 
 type Step = 'credentials' | 'code'
 
 export default function Login() {
-  const { login } = useAuth()
+  const { completeLogin } = useAuth()
   const navigate = useNavigate()
 
   const [step, setStep] = useState<Step>('credentials')
@@ -47,7 +47,7 @@ export default function Login() {
     setError('')
     try {
       const tokens = await api.verifyCode(email, code.trim())
-      saveTokens(tokens, remember)
+      await completeLogin(tokens, remember)
       navigate('/cases')
     } catch (err) {
       setError((err as Error).message || 'Неверный или истёкший код')
