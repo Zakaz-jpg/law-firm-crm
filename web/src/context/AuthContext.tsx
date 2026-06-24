@@ -1,11 +1,12 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { isAuthenticated, clearTokens, saveTokens, api } from '../api/client'
+import type { TokenResponse } from '../api/types'
 
 interface AuthContextType {
   isLoggedIn: boolean
   user: { id: number; email: string; full_name: string; role: string } | null
   login: (email: string, password: string, remember?: boolean) => Promise<void>
-  completeLogin: (tokens: { access_token: string; refresh_token: string }, remember?: boolean) => Promise<void>
+  completeLogin: (tokens: TokenResponse, remember?: boolean) => Promise<void>
   logout: () => void
   updateUser: (data: { full_name?: string; role?: string }) => Promise<void>
 }
@@ -30,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(me)
   }
 
-  async function completeLogin(tokens: { access_token: string; refresh_token: string }, remember = true) {
+  async function completeLogin(tokens: TokenResponse, remember = true) {
     saveTokens(tokens, remember)
     setIsLoggedIn(true)
     const me = await api.me()
